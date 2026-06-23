@@ -1,41 +1,24 @@
-# Polly — Polymarket Copy-Trading Analytics
+# Polly — Copy-Trading Analytics for Polymarket
 
-Can you make money by copying Polymarket's best traders? This project pulls public
-Polymarket data, builds several copy-trading strategies, evaluates them with a
-proper **train / validation / test** date split, and reports out-of-sample ROI.
+Research into whether (and how) you can profitably copy Polymarket's best traders.
 
-**TL;DR:** Naive copying is ~break-even out-of-sample; chasing the hottest wallets
-loses badly; **multi-trader consensus** is the only signal that generalizes
-(≈96% win rate, +64% ROI/bet on held-out test). Full write-up:
-[`reports/EXECUTIVE_SUMMARY.md`](reports/EXECUTIVE_SUMMARY.md).
+## Repository layout
+| Folder | Status | What it is |
+|---|---|---|
+| [`mvp1/`](mvp1/) | ✅ complete | First analysis: top-100 cohort, 7 copy strategies, train/val/test ROI. See [`mvp1/README.md`](mvp1/README.md) and [`mvp1/reports/EXECUTIVE_SUMMARY.md`](mvp1/reports/EXECUTIVE_SUMMARY.md). |
+| `mvp2/` | 🔜 upcoming | Rebuilt from the ground up around realistic, real-time bot information flow and proper bankroll management. |
 
-## Layout
-```
-src/collect_data.py     # pull leaderboard + trade history + market resolutions -> data/
-src/backtest.py         # copyable-bets dataset, date split, strategies, ROI engine
-src/build_notebook.py   # generates the analysis notebook
-notebooks/polly_copytrading_analysis.ipynb   # executed analysis + plots
-reports/EXECUTIVE_SUMMARY.md                 # results write-up
-data/                   # traders.csv, trades.parquet, resolutions.parquet
-```
+## The story so far
+**mvp1** found that naively copying top performers is ~break-even out-of-sample,
+chasing the hottest wallets loses badly, and only **multi-trader consensus**
+generalized (≈96% win rate). But mvp1 has two known weaknesses:
 
-## Reproduce
-```bash
-pip install -r requirements.txt
-python src/collect_data.py                       # ~minutes; writes data/
-python src/build_notebook.py                      # regenerate notebook
-jupyter nbconvert --to notebook --execute --inplace \
-    notebooks/polly_copytrading_analysis.ipynb    # run it
-```
+1. **Unrealistic information flow** — it priced fills at the trader's own price and
+   "knew" resolutions; a real bot trades with latency, price impact, and only
+   point-in-time data.
+2. **No bankroll management** — every bet was $1; no position sizing, compounding,
+   correlation handling, or risk controls.
 
-## Data sources (public, unauthenticated)
-- `lb-api.polymarket.com/{profit,volume}` — leaderboards (max 50/window)
-- `data-api.polymarket.com/activity` — per-wallet trade history
-- `clob.polymarket.com/markets/<conditionId>` — market settlement / winner
-
-## Method in one line
-A *copyable bet* is a BUY by a top performer on a market that resolved; a copier
-buys the same token and holds to settlement, so per-bet
-`ROI = payout / (price·(1+slippage)) − 1`. Strategies differ only in which bets
-they copy and how they weight them; parameters are fit on train, tuned on
-validation, and scored on a held-out test period.
+**mvp2** is being designed to fix both, driven by the deep-research report in
+`research/` and the brief in
+[`mvp1/reports/DEEP_RESEARCH_PROMPT_v2.md`](mvp1/reports/DEEP_RESEARCH_PROMPT_v2.md).
