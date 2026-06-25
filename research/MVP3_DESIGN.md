@@ -4,6 +4,10 @@
 `HOW_POLYMARKET_COPYTRADING_IS_IMPLEMENTED.md`, and `MVP2_RESEARCH_SYNTHESIS.md`. Builds on the
 mvp1/mvp2 verdict: leaderboard copying is not a robust edge — the durable asset is the
 data + methodology.*
+*Updated 2026-06-25 after the primary-source verification pass (see `VERIFICATION_LOG.md`). The
+design is unchanged in shape; the edits below fold in corrected facts: the v2 `OrderFilled` is a
+distinct event (dual decoder), UMA fast-path liveness is 2h, FiveThirtyEight is dead as an anchor,
+Polymarket spreads are measured in bps, and the favorite-longshot bias is **classic, not reversed**.*
 
 ## Thesis
 
@@ -27,11 +31,11 @@ universe at t0** (snapshot every live + upcoming market) so the forward test is 
 | Stream | Source | Cadence | Why |
 |---|---|---|---|
 | **Order books (L2)** | CLOB market WebSocket `book`+`price_change`+`tick_size_change` | event-driven | micro-price, spread/depth, realistic fills; **REST L2 backfill is gone — must capture live** |
-| **Trades (tape)** | on-chain `OrderFilled` (CTF Exchange v1+v2) + Data API `/trades` | per block / poll | execution-truth price & size; **attribute on `maker`** |
+| **Trades (tape)** | on-chain `OrderFilled` (**v1 + v2 use DISTINCT event signatures — dual decoder**; v2 also emits `FeeCharged`) + Data API `/trades` | per block / poll | execution-truth price & size; **attribute per-fill on `maker`** (taker = Exchange contract when sweeping) |
 | **Last-trade/midpoint** | WS `last_trade_price`, CLOB `/midpoint`,`/spread` | event-driven | fast price reference |
-| **On-chain flows** | Polygon logs: CTF `TransferSingle/Batch`, USDC.e+pUSD `Transfer`, proxy-factory `ProxyCreation` | per block (+reorg buffer) | funding graph, wallet age, holdings |
-| **Resolutions** | UMA CTF Adapter events + CLOB market `winner` | per event | settlement ground truth + event timestamps |
-| **Off-chain anchors** | GDELT DOC 2.0 (news), The Odds API (de-vig), ESPN JSON (sports), 538 CSVs (polls) | 1–15 min | fair value + event-study runup; store `seendate` as an interval |
+| **On-chain flows** | Polygon logs: CTF `TransferSingle/Batch`, USDC.e+pUSD `Transfer`, proxy-factory `ProxyCreation` | per block (+~30-block reorg buffer) | funding graph, wallet age, holdings |
+| **Resolutions** | UMA CTF Adapter events + CLOB market `winner` | per event | settlement ground truth + event timestamps (**fast path finalizes after 2h liveness; 48h only on DVM escalation**) |
+| **Off-chain anchors** | GDELT DOC 2.0 (news), The Odds API (de-vig, 500 credits/mo free), ESPN JSON (sports) | 1–15 min | fair value + event-study runup; store `seendate` as an interval. **FiveThirtyEight is shut down (Mar 2025) — dropped; no free raw-poll replacement** |
 
 Plus **market metadata** (Gamma): slug↔conditionId↔clobTokenIds, category (fee rate), neg_risk,
 tick size, min order size, end date.
@@ -55,9 +59,16 @@ tick size, min order size, end date.
   defense and the thing mvp1/mvp2 lacked.
 - **Reorg safety:** Polygon reorgs reach 32+ blocks — apply a confirmation buffer before marking
   on-chain events final; idempotent dedup-by-id absorbs Goldsky/Mirror re-emits.
-- **v2 dual-indexing:** watch **both** exchange generations (`0x4bFb…`/`0xC5d5…` v1 and
-  `0xE111…996B`/`0xe222…0F59` v2) and **both** collateral tokens (USDC.e + pUSD `0xC011…2DFB`);
-  CTF `0x4D97…6045` is stable. v1-only tooling goes blind after Apr 28 2026.
+- **v2 dual-indexing (VERIFIED on Polygonscan):** watch **both** exchange generations — v1 CTF Exch
+  `0x4bFb41d5B3570DeFd03C39a9A4D8dE6Bd8B8982E` / v1 NegRisk `0xC5d563A36AE78145C45a50134d48A1215220f80a`
+  and v2 CTF Exch `0xE111180000d2663C0091e4f400237545B87B996B` / v2 NegRisk
+  `0xe2222d279d744050d28e00520010520000310F59` — and **both** collateral tokens (USDC.e
+  `0x2791Bca1f2de4661Ed88A30C99A7a9449Aa84174` + pUSD `0xC011a7E12a19f7B1f670d46F03B03f3342E82DFB`);
+  CTF `0x4D97DCd97eC945f40cF65F87097ACe5EA0476045` is stable. **The v2 `OrderFilled` is a NEW event**
+  (topic0 `0xe92c2272…`; `OrdersMatched` `0x787a2e12…`; fees split into a separate `FeeCharged`
+  event) — you **cannot** reuse the v1 decoder/topic0, and v2 fees must be read from `FeeCharged` /
+  `getClobMarketInfo`, not the old order `feeRateBps`. Pull the byte-exact v2 ABI from the verified
+  source tab before hard-coding. v1-only tooling goes blind after Apr 28 2026.
 - **Build vs. reuse:** Goldsky Mirror is the fastest production lake for the on-chain streams;
   `SII-WANGZJ/Polymarket_data` is the closest OSS collector to clone. We still run our **own** WS
   order-book recorder (no other source reconstructs historical L2).
@@ -83,22 +94,35 @@ Each strategy is a pure function of the point-in-time feature store → desired 
 the mvp2 fractional-Kelly + caps engine (reused). Ordered most → least structurally robust.
 
 ### A. Passive market-making (most structurally robust)
-- **Why:** Polymarket *subsidizes* makers — **zero maker fee + 20–25% taker-fee rebate + quadratic
-  near-mid liquidity rewards**. Maker>taker return structure (Betfair) + biased taker flow.
+- **Why:** Polymarket *subsidizes* makers (VERIFIED, `docs.polymarket.com`) — **makers are never
+  charged fees + a 20% (crypto) / 25% (other-category) share of taker fees is rebated to makers +
+  quadratic near-mid liquidity rewards** (`S = ((v−s)/v)²·b`, single-sided quotes ÷ c=3). Taker fee
+  itself is category-based on a `p(1−p)` curve (`fee = C × feeRate × p × (1−p)`; feeRate: crypto
+  0.07, sports 0.03, finance/politics/mentions/tech 0.04, econ/culture/weather/other 0.05,
+  geopolitics 0). Maker>taker return structure (Betfair) + biased taker flow.
 - **How:** Avellaneda-Stoikov / Guéant-Lehalle-Fernandez-Tapia inventory-skewed quoting; reservation
   price skews with inventory and time-to-resolution; quote near mid to max liquidity-reward score.
 - **Critical risk controls:** passive LP is *underwriting*, not spread capture (Palumbo) — cap
   terminal/resolution exposure, skew hard on inventory, and **pull quotes around event conclusion**
-  (post-event/pre-oracle "frozen liquidity": NBA spreads hit ~7,532 bps; ~81% of apparent arbs are
+  (post-event/pre-oracle "frozen liquidity": VERIFIED arXiv 2605.00864 — NBA post-game median spread
+  hit **7,532.65 bps** and **30/37 (81.1%)** of theoretical arbs were strictly post-game/
   unexecutable). Avoid one-sided toxic flow (use the toxicity score).
 
 ### B. Mispricing / arbitrage (structural, capacity-limited)
-- **B1 single-market:** YES+NO < $1 → buy the pair; capacity ~15 shares, half-life <1 min → must be
-  fast and is self-limiting. **B2 neg-risk:** multi-outcome YES-sum ≠ 1 via NegRiskAdapter convert.
+- **B1 single-market:** YES+NO < $1 → buy the pair; (VERIFIED arXiv 2605.00864) capacity is tiny —
+  76.9% of opportunities constrained to ~**14.8 shares**, median yield ~**101 bps**, median duration
+  **3.6s** → must be fast and is self-limiting. **B2 neg-risk:** multi-outcome YES-sum ≠ 1 via
+  NegRiskAdapter convert.
 - **B3 fair-value deviation:** bet when market price deviates from de-vigged/ensembled external fair
   value beyond a threshold — strongest for **sports** (de-vig consensus odds, Shin) and **long-horizon
-  politics** (poll ensemble + compression correction: a 70¢ week-out politics contract ≈ 83% true).
-- **Caveat:** log capacity honestly; most cross-venue/stale arbs are unexecutable frozen liquidity.
+  politics** (poll ensemble + compression correction: VERIFIED, a 70¢ politics contract **one month
+  out ≈ ~75% true**, slope-dependent). **Direction note (CORRECTED):** Polymarket exhibits the
+  **classic** favorite-longshot bias (favourites underpriced, longshots overpriced) — same direction
+  as racetracks, *not* reversed — which is the same compression-toward-50% effect; tilt the standard
+  way, platform-calibrated.
+- **Caveat:** log capacity honestly; observed deviations clear in **seconds**, and cross-venue
+  magnitudes are now **unverified speculation** (neither arbitrage paper studied cross-venue) — do
+  not size on them; most stale arbs are unexecutable frozen liquidity.
 
 ### C. Fade-the-dumb-money (large, persistent, non-self-erasing)
 - **Why:** ~3% of traders drive price discovery; the unskilled majority's losses fund them
@@ -143,8 +167,9 @@ The point of the whole project: an out-of-sample, survivorship-free, leakage-fre
 
 ### 3.2 Evaluation cadence without peeking inflation
 - **Pre-register** the 1 / 2 / 6-month looks. Monthly peeking at α=0.05 inflates Type-I error
-  (~0.19 at 5 looks), so either use **group-sequential O'Brien-Fleming alpha-spending**, or
-  preferably **e-values / confidence sequences** (anytime-valid — correct at *any* stopping time).
+  (CORRECTED: ~0.14 at 5 looks, ~0.19 at 10 looks — Armitage), so either use **group-sequential
+  O'Brien-Fleming alpha-spending**, or preferably **e-values / confidence sequences** (VERIFIED
+  anytime-valid, arXiv 2210.01948 — correct at *any* stopping time).
 - **Report in stability order:** **win rate first** (binomial SE √(p(1−p)/n) — stabilizes in ~weeks,
   ~100 trades → ~5pp); **Sharpe provisional** (Lo SE, slow); **max drawdown explicitly provisional**
   (biased, grows with window — not comparable across horizons).
@@ -177,7 +202,14 @@ and observed capacity ≥ a usable bankroll. Otherwise: document and retire (as 
 > ships the code, schema, and run-book; the months-long capture runs outside the session.
 
 ## Open items to verify before/while building (flagged in research)
-Live Goldsky project-id/v2 manifest coverage; deployed UMA liveness (2h vs 48h); `book.hash` algo
-(read `py-clob-client`); exact v2 `OrderFilled` ABI (pull from the verified contract); 538 CSV
-continuity; Arkham/Nansen pricing at our query volume. Treat all single-source magnitudes in the
-research as directional, not as plug-in parameters.
+**Resolved in the 2026-06-25 verification pass** (see `VERIFICATION_LOG.md`): UMA liveness = **2h**
+fast path (48h is DVM-only); v2 `OrderFilled`/`OrdersMatched` have **new topic0s** + a separate
+`FeeCharged` event (topic0s recorded in the log; still pull the byte-exact param list from the
+verified Polygonscan source before hard-coding); 538 CSVs are **dead** (drop them); fee model and
+all contract addresses confirmed on Polygonscan.
+
+**Still open:** live Goldsky project-id/v2 manifest coverage; `book.hash` algo (read
+`py-clob-client`); Arkham/Nansen pricing at our query volume (vendor docs were anti-bot-blocked —
+only snippet-level). Treat all remaining single-source magnitudes in the research as directional,
+not as plug-in parameters; in particular the cross-venue arbitrage magnitudes are now **unverified
+speculation**, and the GNN/GAT Sybil-accuracy claim was **dropped as unsupported**.
