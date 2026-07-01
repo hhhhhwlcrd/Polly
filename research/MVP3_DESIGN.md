@@ -53,8 +53,9 @@ tick size, min order size, end date.
 - **Two-layer firewall:** the raw log records *everything*; the decision layer may only call
   `as_of(t)` (records with valid-time ≤ t and ingest-time ≤ t). This is the standard look-ahead
   defense and the thing mvp1/mvp2 lacked.
-- **Reorg safety:** Polygon reorgs reach 32+ blocks — apply a confirmation buffer before marking
-  on-chain events final; idempotent dedup-by-id absorbs Goldsky/Mirror re-emits.
+- **Reorg safety:** treat **Polygon milestone finality (~2–5s)** as the signal for marking on-chain
+  events final (verified — sprintLength was cut 64→16 to shrink reorgs; there is no official fixed
+  "32-block" bound, so don't hardcode one). Idempotent dedup-by-id absorbs Goldsky/Mirror re-emits.
 - **v2 dual-indexing:** watch **both** exchange generations (`0x4bFb…`/`0xC5d5…` v1 and
   `0xE111…996B`/`0xe222…0F59` v2) and **both** collateral tokens (USDC.e + pUSD `0xC011…2DFB`);
   CTF `0x4D97…6045` is stable. v1-only tooling goes blind after Apr 28 2026.

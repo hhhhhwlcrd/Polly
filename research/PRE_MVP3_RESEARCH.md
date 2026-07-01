@@ -3,11 +3,14 @@
 *Compiled 2026-06-25 from a 14-agent deep-research fan-out across insider detection, pricing/
 mispricing, fair value, microstructure, on-chain data, forward-testing, and signal actionability.*
 
-> **Sourcing caveat (carried throughout):** the session's egress proxy returned HTTP 403 on
-> direct PDF fetches, so academic claims rest on search-indexed extracts of primary sources,
-> cross-checked across ≥2 independent results. Canonical URLs are cited; formula transcriptions
-> (PSR, MinTRL, DSR, PIN/VPIN) should be byte-verified against the primary PDFs before they are
-> load-bearing in code. The adversarial re-fetch verification pass could not run.
+> **VERIFICATION STATUS (updated 2026-07-01):** a primary-source verification pass has now run
+> (see [`VERIFICATION_LOG.md`](VERIFICATION_LOG.md)). The forward-test formulas (PSR/MinTRL/DSR/
+> Kelly), all on-chain addresses/fees/events, and the Polymarket-empirical figures (arbitrage,
+> frozen liquidity, Dubach 59%, Kyle λ, news passthrough) are now **primary-verified**. Ten
+> attribution/label/figure errors were **corrected** — the corrected values are inlined below and
+> tabulated in the log. Items still resting on blocked hosts (Mitts-Ofir 69.9%, Page-Clemen
+> 4.7–10.9pp, FLB dollar magnitudes, ensemble ~40%) are flagged inline. **No strategic conclusion
+> changed.** The original text was built from search snippets while WebFetch was 403-blocked.
 
 ---
 
@@ -52,7 +55,9 @@ volume is wash trading** (≈45% of *sports* volume). The election whale "Théo"
 was a **false positive** — research-driven, not an insider — which is the central design warning.
 
 **The recurring on-chain signatures (engineer these as features):**
-- **Wallet freshness:** age < 48h, nonce ≤ 5, first trade > $1k (deployed-detector thresholds).
+- **Wallet freshness:** age < 48h, nonce ≤ 5, first trade > $1k (deployed-detector thresholds;
+  `pselamy/polymarket-insider-tracker`. *[corrected: no "$5k whale/$25k mega" tiers exist in that
+  detector — only fresh-wallet $1k, a $10k large-trade bonus, and the 2%/5% size anomaly below.]*)
 - **Funding-source clustering:** trace USDC/pUSD `Transfer` edges backward to a shared CEX deposit
   address (how Chainalysis tied Théo's 11 wallets). Use the **EVM deposit-address/sweep heuristic**
   (Victor FC 2020; `etherclust`), **not** Bitcoin co-spend. Stop traversal at known service clusters.
@@ -62,7 +67,9 @@ was a **false positive** — research-driven, not an insider — which is the ce
 - **Anomalous win rate:** p-value of observed win rate vs. chance (flag p<0.001 / >80%).
 - **Sybil clusters:** funding-graph + **gas-provision sub-graph** (first-gas edges), Louvain/K-Core
   community detection + behavioral co-movement (the Arkham/Bubblemaps/Nansen/Trusta production
-  method). GNN/GAT models report 95–100% on chain/tree Sybil patterns.
+  method). ML detectors work: a LightGBM subgraph model reports all metrics **>0.9** on 193,701
+  addresses (arXiv 2505.09313). *[corrected: the earlier "95–100% chain/tree" figures were not in
+  that paper.]*
 
 **Methods that transfer from TradFi (on-chain *improves* on them — trade direction & identity are
 observable, eliminating trade-classification error):**
@@ -74,9 +81,11 @@ observable, eliminating trade-classification error):**
   Bondarenko — so treat as a toxicity gauge, not a forecaster.)
 
 **The flagship purpose-built source:** **Mitts & Ofir (2026), "From Iran to Taylor Swift"** — a
-statistical screen over ~210k Polymarket wallet-market pairs flagging **69.9% win rates / ~$143M
-anomalous profit**, combining abnormal win rate + abnormal profit + concentrated timely
-positioning. (Retrieve the PDF for exact thresholds.) **Polysights** raised $1.5M to productize
+statistical screen over **~210k Polymarket wallet-market pairs** (verified) flagging **~$143M
+anomalous profit** (verified via two citing arXiv papers), combining abnormal win rate + abnormal
+profit + concentrated timely positioning. *[The **69.9%** flagged win rate is from the SSRN/corpgov
+abstract only — SSRN and Harvard corpgov were host-blocked this session, so it is unverified against
+the primary PDF.]* **Polysights** raised $1.5M to productize
 exactly this; **Chainalysis** now partners with Polymarket on it.
 
 **Hard limits:** attribution dead-ends at CEX deposit addresses and mixers; vendor labels
@@ -93,14 +102,20 @@ Théo-style false positives. Tooling: Arkham API (`/intelligence/address_enriche
 **Calibration:** Polymarket is broadly well-calibrated near resolution (self-reported Brier ~0.06;
 independent 0.06–0.18) but **systematically compressed toward 50% at long horizons** — a 70¢
 politics contract a week out implies a true ~83% (Page & Clemen 2013; Le 2026). **Domain-specific:**
-sports well-calibrated at 0–48h; politics chronically underconfident. **Reversed favorite-longshot
-bias** on Polymarket (low-prob *overpriced*) — opposite to racetracks, so any FLB tilt must be
-platform-calibrated, not ported.
+sports well-calibrated at 0–48h; politics chronically underconfident. **Favorite-longshot bias on
+Polymarket runs in the *classic* direction** (longshots overpriced / favorites underpriced,
+compression toward 50%; Politics calibration slope **1.31**, Le 2026, arXiv 2602.19520). *[corrected:
+the earlier "reversed FLB" label and the "Reichenbach & Walther" attribution were wrong.]* Any FLB
+tilt must still be platform- and category-calibrated (Weather/Sports can flip at some horizons).
 
-**Internal arbitrage (strongest, but capacity-bound):** ~**$40M** extracted Apr2024–Apr2025, mostly
-single-market **YES+NO < $1** and neg-risk multi-outcome **YES-sum ≠ 1**. But per-opportunity it's
-small (~100 bps), short-lived (half-life **< 1 min** as λ fell 0.52→0.01), and **liquidity-capped
-(~15 shares avg; 62–78% fail on execution/stale quotes)**.
+**Internal arbitrage (strongest, but capacity-bound):** **$39.59M (~$40M)** extracted
+Apr2024–Apr2025 (verified) — single-market *rebalancing* ≈ **$10.6M**, cross-market *combinatorial*
+≈ **$29.0M** *[corrected: labels were previously swapped]*; mechanisms are **YES+NO < $1** and
+neg-risk multi-outcome **YES-sum ≠ 1**. Per-opportunity small (~100 bps), short-lived (half-life
+**< 1 min** as Kyle λ fell **0.518→0.01**, verified). **Capacity is retail-scale — but the ~15-share
+/ 76.9% figures belong to the NBA in-game study** (arXiv 2605.00864: 76.9% of combinatorial ops
+capped at avg 14.8 shares), *not* the aggregate arbitrage paper; there is no "62–78% execution-fail"
+figure in the source.
 
 **Cross-venue:** ~6% of events are cross-listed; semantically-equivalent markets show persistent
 **2–4% deviations (≥1h)** due to *structural* frictions (semantic non-fungibility, geo/KYC,
@@ -115,9 +130,11 @@ de-vigs/ensembles external probabilities and bets deviations is principled, espe
 (de-vig consensus odds) and politics (poll aggregators + long-horizon compression correction).
 
 **Statistical dynamics:** roughly a martingale for *anticipated* news, but violated predictably —
-**~0.64 news passthrough with multi-minute drift** (underreaction → tradable), **overreaction to
-*surprises*** (Choi-Hui), ~50% open-to-close reversal in pre-game lines (Moskowitz), negative
-high-frequency autocorrelation (mean reversion). Volatility *rises* into resolution (non-stationary).
+**~0.64-for-one news passthrough with multi-minute drift** (verified; underreaction → tradable),
+**overreaction to *surprises*** (Choi-Hui), open-to-close reversal in pre-game lines (Lou-Polk-Skouras
+"A Tug of War," JFE 2019 — *[corrected: previously mis-attributed to Moskowitz; the ~50% magnitude is
+unconfirmed]*), negative high-frequency autocorrelation (mean reversion). Volatility *rises* into
+resolution (non-stationary).
 
 ---
 
@@ -142,10 +159,13 @@ high-frequency autocorrelation (mean reversion). Volatility *rises* into resolut
 **On-chain (Polygon):** ConditionalTokens ERC-1155 `0x4D97…6045` (stable; `TransferSingle/Batch` =
 holdings, no price); **CTF Exchange `OrderFilled(maker,taker,makerAssetId,takerAssetId,…)`** = the
 trade tape (price = collateral/token ratio; `assetId==0` side = buy/sell). **Attribute on
-`OrderFilled.maker` (the proxy/funder), never the relayer `tx.from`.** Proxy↔EOA is **CREATE2-
-deterministic** (Safe `getOwners()` or forward index). UMA Optimistic Oracle resolution (~2h
-liveness) gives on-chain ground-truth event timestamps — a price move *before* the proposal tx is
-itself a runup signal.
+`OrderFilled.maker` (the proxy/funder), never the relayer `tx.from`** (all verified vs docs +
+PolygonScan). Proxy↔EOA is **CREATE2-deterministic** — but the derivation differs by factory: legacy
+Safe/Magic proxies use `salt=keccak256(owner)` (Safe also resolvable via `getOwners()`), while the
+**current Deposit Wallet Factory** (`0x0000…Cc07`) uses `salt=keccak256(abi.encode(factory,
+walletId))` with beacon/UUPS clones — use the documented `deriveDepositWalletAddress()`, don't
+hardcode the old salt. UMA resolution uses a **2h liveness** default (verified; the 48h figure is the
+*separate* post-dispute DVM voting phase); a price move *before* the OO proposal tx is a runup signal.
 
 > ⚠️ **April 28 2026 v2 migration is load-bearing:** new exchange addresses (`0xE111…996B`,
 > `0xe222…0F59`), collateral **USDC.e → pUSD** (`0xC011…2DFB`), assembly-emitted events, new order
