@@ -37,6 +37,10 @@ The two **defensible** edges the literature actually supports are therefore:
    ~0.64-for-one to a benchmark probability change, leaving multi-minute drift ([VERIFIED] Kalshi
    study, arXiv 2606.07811 — passthrough 0.63–0.64). The race is automation vs. slow humans, not
    copying a confirmed fill.
+   > ⚠️ **OVERTURNED 2026-07-06** (`STRATEGY_SELECTION.md` §5): the same paper's Appendix B shows
+   > the drift is **negative after executable costs** at every threshold — the "net" figure is net
+   > of benchmark changes, not trading costs. The edge exists only at unattainable midpoints.
+   > Strategy demoted to a zero-capital shadow pilot.
 2. **Fade the identifiable *unskilled* cohort.** Yale/LBS analysis of 1.72M Polymarket accounts
    ($13.76B volume) finds **~3% of traders drive nearly all price discovery and accuracy**, and the
    unskilled majority's losses flow to them ([SNIPPET, cross-checked] Gómez-Cram, Guo, Jensen &

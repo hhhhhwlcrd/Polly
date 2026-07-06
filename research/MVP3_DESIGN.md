@@ -132,6 +132,10 @@ the mvp2 fractional-Kelly + caps engine (reused). Ordered most → least structu
   side**. Pairs naturally with market-making (be the counterparty to biased flow).
 
 ### D. News-latency (automation race in the one genuine window)
+> ⚠️ **OVERTURNED 2026-07-06** — see `STRATEGY_SELECTION.md` §5: the anchor paper's own executable
+> test (arXiv 2606.07811 App. B) is negative after costs at every threshold; Polymarket matching
+> delays hand the speed edge to makers; the fee-free geopolitics niche is documented insider
+> territory. Demoted to a ~$100 shadow-mode measurement pilot; do not build for capital.
 - **Why:** prices update only ~0.64-for-one to a benchmark probability change → multi-minute drift;
   the edge is reacting to *news* faster than slow humans, not copying confirmed fills.
 - **How:** GDELT/RSS/odds/ESPN event detector → map to affected market → take direction before the
