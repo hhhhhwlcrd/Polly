@@ -29,8 +29,9 @@ class OpenDota:
         self.session = requests.Session()
         self.session.headers["User-Agent"] = "polly-ti2026-research (github.com/hhhhhwlcrd/Polly)"
         self.api_key = api_key or os.environ.get("OPENDOTA_API_KEY")
-        # keyed tier allows much higher rates
-        self.min_interval = 0.15 if self.api_key else min_interval
+        # keyless: 60/min; keyed: 300/min (limits verified from odota/core source;
+        # exact daily quota is server-side — read GET /metadata at startup)
+        self.min_interval = 0.25 if self.api_key else min_interval
         self._last_call = 0.0
         CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -68,6 +69,10 @@ class OpenDota:
         raise OpenDotaError(f"GET {path}: retries exhausted (rate limit?)")
 
     # ---- convenience wrappers -------------------------------------------
+    def metadata(self):
+        """Live quota info: {freeCallLimit, freeRateLimit, premRateLimit, ...}."""
+        return self.get("/metadata", use_cache=False)
+
     def leagues(self):
         return self.get("/leagues")
 

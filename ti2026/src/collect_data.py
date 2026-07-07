@@ -25,6 +25,15 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from src.opendota import DATA_DIR, OpenDota, OpenDotaError
 
 # Name patterns for the 2025-26 tier-1 circuit. Extend as events are announced.
+# Verified league ids (fallback if name matching misses; source: dotabuff slugs)
+KNOWN_LEAGUE_IDS = {
+    18324: "The International 2025",
+    18988: "DreamLeague Season 27",
+    19269: "DreamLeague Season 28",
+    19696: "DreamLeague Season 29",
+    19435: "PGL Wallachia Season 7",
+}
+
 TIER1_PATTERNS = [
     r"The International",
     r"DreamLeague Season \d+",
@@ -83,8 +92,8 @@ def flatten_match(m: dict) -> tuple[dict, list[dict], list[dict]]:
                 "is_radiant": p.get("isRadiant"),
                 "win": p.get("win"),
                 "hero_id": p.get("hero_id"),
-                "lane": p.get("lane"),
-                "lane_role": p.get("lane_role"),  # 1 safe, 2 mid, 3 off, 4 jungle
+                "lane": p.get("lane"),  # 1 safe, 2 mid, 3 off, 4 jungle (parsed only)
+                "lane_role": p.get("lane_role"),  # 1 carry, 2 mid, 3 off, 4 support
                 "lane_efficiency": p.get("lane_efficiency"),
                 "kills": p.get("kills"),
                 "deaths": p.get("deaths"),
