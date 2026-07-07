@@ -1,4 +1,4 @@
-# TI 2026 (Dota 2) Winner Market — Undervaluation Scan (snapshot 2026-07-07 ~13:30 UTC)
+# TI 2026 (Dota 2) Winner Market — Undervaluation Scan (snapshot 2026-07-07 ~13:30 UTC; updated ~17:45 UTC)
 
 *Five-agent live research applying the Strategy-B3 methodology (`STRATEGY_SELECTION.md`):
 (1) Polymarket/tournament state via gamma+CLOB APIs, (2) bookmaker benchmark + Shin de-vig,
@@ -25,6 +25,21 @@ open"; books historically appear 3–5 weeks out, after the Esports World Cup). 
 3. This is a **relative-value table**, therefore: fair-value bands are synthesized from the season
    evidence + the one live (partial, C-grade) EWC bookmaker list + the TI-history prior — not from
    a de-viggable TI book, because none exists. Confidence is correspondingly wide.
+
+## 0b. Update log — 2026-07-07 ~17:45 UTC re-pull (EWC day 1 in progress)
+
+TI winner book: **zero new trades** ($4,237 lifetime unchanged; 24h volume still the single $45
+Xtreme print). Quote-side moves only, and they *tightened toward our fair bands*:
+- **TEAM VISION best bid .09 → .11** (mid .16 → .17) — the bid side is converging on our 13–17%
+  band floor; the recommended resting-bid level moves up accordingly (see §6 ladder).
+- Team Spirit bid .07 → .08 (mid .115 → .12); Yandex bid .12 → .11 (mid .230 → .225). Everything
+  else unchanged; sum of mids 1.93 — still a shell book.
+
+EWC winner market (form anchor, $82.6k vol, $47k in 24h — this one is live and trading): Yandex
+.21, PARIVISION .16, Falcons .15, **Aurora .10 → .11**, Spirit .095, BetBoom .095, 1W .0585,
+**LGD .0375 → .044**, **Liquid .0525 → .041** (day-1 drift; group matches were in progress at
+pull time — treat as noise until Liquipedia standings post). No day-1 upsets large enough to move
+the TI fair bands yet.
 
 ## 1. Fair-value synthesis (before comparing to Polymarket)
 
@@ -114,7 +129,40 @@ live bookmaker list** — followed by Falcons (14.0¢ vs 11–14%) and Aurora (1
 5. Polymarket book formation: at $4k volume, one $500 order moves everything; recheck before
    quoting.
 
-## 5. Sources & data quality
+## 5. Execution plan — $300 sleeve (re-evaluate every 1–2 weeks + in-tournament)
+
+The book is a shell, so the sleeve is deployed as a **maker-bid ladder**, not purchases. Fills
+only happen when someone crosses down to us — we either buy below fair or don't trade at all.
+Never cross an ask; nothing in the sub-10¢ FLB zone.
+
+**Phase 1 — now (post day-1 update): GTC maker bids, ~$150 notional if all fill**
+
+| Team | Bid level | Shares | Cost if filled | vs fair band |
+|---|---|---|---|---|
+| TEAM VISION | **.12** (best bid now .11) | ~415 | $49.8 | floor of 13–17% |
+| Team Falcons | **.10** (best bid .08) | 400 | $40.0 | floor of 11–14% |
+| Team Yandex | **.14** (best bid .11) | ~285 | $39.9 | below 16–20% |
+| Aurora | **.07** (best bid .06) | 300 | $21.0 | floor of 7–10% |
+
+Standing rules: **cancel a team's bid before its EWC elimination/decider matches** (a fill during
+a live loss is pure adverse selection — the main way this ladder loses); refresh levels at each
+weekly re-eval; a fill immediately followed by bad news gets re-checked against the new fair band,
+not averaged down.
+
+**Phase 2 — ~Jul 20–28 ($100 reserve):** EWC concludes Jul 19 and bookmakers historically post TI
+outrights in this window. Run `ti2026/notebooks/05` with real book odds → true Shin de-vig. Buy
+(maker) anything ≥2pp below Shin-fair net of costs; **sell any filled Phase-1 leg that has gone
+≥2pp rich** as the book tightens — monetizing book formation without tournament risk.
+
+**Phase 3 — during TI, Aug 13–23 ($50 reserve):** the documented dip-buy — a top-3-fair team with
+a bad Swiss start that survives to playoffs gets oversold (TI25: Falcons went 2–3 in Swiss, price
+crashed, won the title through the upper bracket). Maker bids between series only.
+
+Expectations, honestly: EV on the sleeve is small in dollars (+$20–50 if the bands are right);
+most bids may never fill; a filled leg still loses ~85% of the time if held to resolution —
+the sell-into-strength rules in Phases 2–3 are where edge converts to realized P&L.
+
+## 6. Sources & data quality
 
 Polymarket gamma/CLOB pulled live 13:22–13:30 UTC (event id 649201; A-grade). Tournament facts
 (Shanghai Aug 13–23; Swiss Aug 13–16 → 8-team main event Aug 20–23; 7 invites + 9 qualifier
