@@ -1,4 +1,4 @@
-# WC-2026 Winner Market — Undervaluation Scan (snapshot 2026-07-07 ~10:30 UTC)
+# WC-2026 Winner Market — Undervaluation Scan (snapshot 2026-07-07 ~10:30 UTC; updated ~18:00 UTC)
 
 *Three-agent live research: (1) Polymarket market state via gamma/CLOB APIs, (2) sharp-book
 fair value with Shin de-vig, (3) model/Elo fair value + platform-bias adjustments — applying the
@@ -32,6 +32,24 @@ fair ≈ 16.5–16.6%), rich vs Opta (16.3), rich vs Kalshi (16.9); PM also pric
 advance vs Egypt — a known Bradley-Terry confound). Pattern is consistent with a Messi retail
 premium. Norway 5.8¢ is marginally rich (+0.9–1.6pp; Haaland flow). Everything else is inside the
 noise/cost band; the neg-risk book sums to 0.9935, so there is no structural discount to harvest.
+
+## Update log — 2026-07-07 ~18:00 UTC re-pull (post Argentina–Egypt)
+
+**Argentina 3–2 Egypt** — from 0–2 down (79'/83'/90+' comeback; Messi missed a first-half
+penalty; [FIFA match centre](https://www.fifa.com/en/match-centre/match/17/285023/289288/400021528),
+[ESPN](https://www.espn.com/soccer/match/_/gameId/760509/egypt-argentina),
+[NPR](https://www.npr.org/2026/07/07/nx-s1-5884872/2026-world-cup-fifa-argentina-egypt-round-of-16)).
+Argentina advance to QF4 vs tonight's Switzerland–Colombia winner (still pending at pull time;
+PM prices Colombia 2.85¢ vs Switzerland 1.15¢ on the winner board).
+
+Live PM moves (winner market, $87.9M 24h, sum of active mids 0.9915 — book still fair-sum):
+
+| Team | 10:30 → 18:00 | Read |
+|---|---|---|
+| **Argentina** | 18.45 → **17.45** (−1.0, on $12.9M 24h) | **Fell despite winning.** A fairly-priced team clears an 84%-priced match and gains ~+1pp; falling −1pp instead = pre-match price was ~2pp too rich (our "sell" verdict) *and* the market derated the near-loss performance. **The rich-vs-fair status is now UNKNOWN**: mechanically conditioning stale pre-match book fairs on advancing gives ~19–19.5%, but fresh book odds will have cut Argentina's final-win conditional after that display. **Do not short at 17.45 without a fresh de-vig.** |
+| **Spain** | 18.05 → **18.75** (+0.7, no match played) | The undervaluation gap **narrowed to ~+1.5–2.5pp** vs the 20–21% fair estimate. Thesis intact but thinner; entry discipline matters more now (see execution plan). |
+| England | 14.45 → 15.25 | drift up; still fair vs 14.7–17 range |
+| France | 33.05 → 32.75 | unchanged-fair |
 
 ## Consolidated fair-value table (10:30 UTC, before the Jul 7 evening matches)
 
@@ -67,6 +85,25 @@ and Argentina (sell) clear the taker hurdle; both clear the maker hurdle comfort
   ×0.5 evidence haircut.
 - **Not tradeable:** every "cheap-looking" longshot (Morocco vs Opta, Norway) — the FLB regime
   says sub-15¢ names are the systematically overpriced zone, and Elo agrees.
+
+## Execution plan — $300 sleeve (2–3 re-evaluations before the final)
+
+Style: **trade the reprice, don't marry the final** — held to resolution, a ~20%-fair position
+loses ~80% of the time; buying cheap before a gate and selling into strength after it clears
+keeps the EV with far less variance. Maker orders only (0 fee + rebate; taker ≈0.45¢ + spread);
+never order during a live match; no order without a fresh de-vig showing ≥2pp of edge.
+
+| Checkpoint | Condition → action | Size |
+|---|---|---|
+| **T0 — before Spain–Belgium (Jul 10)** | Re-run de-vig. If Spain ≤ fair − 2pp (i.e. ≲18.5–19.0 vs fair ≥20.5): maker bid | **$120** |
+| T0 optional | Argentina leg **suspended** post-Egypt (see update log) — re-enable only if fresh de-vig shows ≥1.5pp rich | ($45) |
+| **T1 — Jul 11–13, Spain won QF** | Re-run. Still ≥2pp cheap → add **$90**. Gap closed (price ~26–30¢) → **sell half as maker** (+45–60% on tranche) | +$90 / −½ |
+| T1 — Spain lost QF | Tranche dead (−$120 max). No revenge bets: deploy the remaining $180 only on a new ≥2pp verified gap among survivors; else hold cash | $0 default |
+| **T2 — Jul 16–18, pre-final** | Hold to the final only if still ≥2pp cheap vs the final-match de-vig; otherwise sell everything as maker into the pre-final liquidity peak | exit |
+
+Caps: ≤$150 exposure through any single match; max loss $300 by construction. Honest EV:
++$25–35 on the sleeve if the Spain edge is real; the post-Egypt narrowing (gap now ~1.5–2.5pp)
+means T0 may legitimately produce **no trade** — that is the system working, not failing.
 
 ## Data quality
 
