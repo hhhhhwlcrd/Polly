@@ -115,7 +115,39 @@ and Argentina (sell) clear the taker hurdle; both clear the maker hurdle comfort
 - **Not tradeable:** every "cheap-looking" longshot (Morocco vs Opta, Norway) — the FLB regime
   says sub-15¢ names are the systematically overpriced zone, and Elo agrees.
 
-## Execution plan — $300 sleeve (2–3 re-evaluations before the final)
+## Execution plan — ACTIONABLE $70 REVISION (Jul 10; supersedes the $300 sizing below)
+
+**Total budget $70 (currently USDT on Binance), covering BOTH World Cup and TI sleeves.**
+
+### Funding path: Binance → Polymarket (~$1–1.5 total cost, ~10–15 min)
+1. **Binance Convert: USDT → USDC** (fee-free, instant). Rationale: native USDC avoids the
+   auto-swap spread that Polymarket's bridge charges on USDT deposits.
+2. **Withdraw USDC on the *Polygon* network** to your Polymarket deposit address (Polymarket →
+   Deposit → Transfer Crypto → USDC → Polygon; addresses are per-network — copy the Polygon/EVM
+   one). Binance's Polygon-USDC withdrawal fee is ~$1 (check the live fee in the UI). Min deposit
+   $2; arrival ~5–10 min; auto-converts to pUSD 1:1.
+3. Fallback (one step fewer, slightly worse rate): withdraw **USDT on Polygon** directly —
+   Polymarket accepts it (min $2) and auto-swaps to pUSD with a small embedded spread.
+4. **Checks before sending $70 in one shot** (a $2 test costs $1 in fees — not worth it at this
+   size, so triple-check instead): network = Polygon, address = the one Polymarket shows for
+   Polygon/EVM, token = USDC. Wrong-network sends are unrecoverable. Also confirm the platform's
+   ToS/geo-eligibility for your jurisdiction before funding.
+
+### $70 allocation (lands ≈ $68.5 after fees)
+| Sleeve | Size | Action |
+|---|---|---|
+| **WC — Spain T0 (live, triggered)** | **$55** | Maker bid 16.4–16.5¢ (~333 shares) **before ~18:00 UTC today**; cancel if unfilled at kickoff−1h |
+| **TI — one bid only** | **$12** | GTC maker bid TEAM VISION @ .12 (100 shares). At $70 total, the rest of the TI ladder is capital drag — skip Yandex/Falcons/Aurora |
+| Buffer | ~$1.5 | dust/fees |
+
+Scaled T1 rules (post Spain–Belgium): win + gap closed (≥26¢) → **sell half as maker** (locks
+~+60% on ~$27); win + still ≥2pp cheap → hold, nothing to add (no reserve at this size); loss →
+sleeve is down $55, **stop** — do not redeploy into the SFs unless a fresh de-vig shows ≥2pp.
+Honesty at this scale: total EV is roughly **+$5–9 if the edges are real**, i.e. ~2 coffees —
+the value of running this at $70 is process practice (funding, maker execution, checkpoint
+discipline), not the P&L. Deposit friction alone is ~2% of the bankroll.
+
+## [superseded] Execution plan — $300 sleeve (2–3 re-evaluations before the final)
 
 Style: **trade the reprice, don't marry the final** — held to resolution, a ~20%-fair position
 loses ~80% of the time; buying cheap before a gate and selling into strength after it clears
