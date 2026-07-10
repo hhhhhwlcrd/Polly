@@ -1,4 +1,4 @@
-# WC-2026 Winner Market — Undervaluation Scan (snapshot 2026-07-07 ~10:30 UTC; updated Jul 7 ~18:00, Jul 10 ~12:30 UTC)
+# WC-2026 Winner Market — Undervaluation Scan (snapshot 2026-07-07 ~10:30 UTC; updated Jul 7 ~18:00, Jul 10 ~12:30 & ~21:45 UTC — LIVE POSITION)
 
 *Three-agent live research: (1) Polymarket market state via gamma/CLOB APIs, (2) sharp-book
 fair value with Shin de-vig, (3) model/Elo fair value + platform-bias adjustments — applying the
@@ -51,7 +51,30 @@ Live PM moves (winner market, $87.9M 24h, sum of active mids 0.9915 — book sti
 | England | 14.45 → 15.25 | drift up; still fair vs 14.7–17 range |
 | France | 33.05 → 32.75 | unchanged-fair |
 
-## Update log — 2026-07-10 12:31 UTC re-pull: **T0 TRIGGERED on Spain**
+## POSITION LEDGER & NEXT STEPS (Jul 10, 21:45 UTC)
+
+**T0 EXECUTED:** bought **303 Spain YES @ 16.5¢ = $50.00** (maker fill, pre-QF).
+**Spain beat Belgium 2–1 in regulation** (Merino 88' — [ESPN](https://www.espn.com/soccer/match/_/gameId/760511/belgium-spain),
+[CNN](https://www.cnn.com/2026/07/10/sport/live-news/spain-belgium-world-cup-score)) → **semifinal vs France, Jul 14**.
+
+Mark-to-market at 21:45 UTC: Spain bid 21.1¢ → position worth **$63.93 (+27.9%)**. Board:
+France 37.65, Spain 21.15, Argentina 17.65, England 14.85; remaining reserve **$18.50**.
+
+**T1 decision (per plan):**
+- 21.15¢ is **below the 26¢ sell-half trigger → HOLD all 303 shares.** No sell.
+- The stale-board conditional math suggests Spain may still be 2–4pp cheap, but conditioning a
+  Jul-8 board double-counts once both SF opponents advance — a **fresh live-book check decides
+  the reserve**: if any sharp book quotes Spain to win the WC at **+310 or shorter** (Shin-fair
+  ≥ ~23%), add the $18.5 as a maker bid ≤21.5¢; if **+330 or longer**, hold the reserve in cash.
+- **Next checkpoints:** (1) *pre-SF, Jul 13–14:* if Spain trades ≥26¢ before kickoff, sell half
+  (~152 sh) as maker — locks ≥$39.5 against the $50 cost, letting the rest ride the France game
+  free; below 26¢, hold through the SF (position either dies or roughly doubles). (2) *post-SF:*
+  win → T2 rules (hold to final only if ≥2pp cheap vs final-match de-vig, else sell into the
+  pre-final peak); loss → sleeve ends ≈ −$50 +$18.5 reserve intact; no revenge redeploy.
+- Standing rules unchanged: maker orders only, nothing in-play, reserve deploys only on a
+  verified ≥2pp gap.
+
+## Update log — 2026-07-10 12:31 UTC re-pull: **T0 TRIGGERED on Spain** [executed — see ledger above]
 
 Bracket state: **France beat Morocco** (QF1) and **Switzerland beat Colombia** (R16) → QF4 =
 Argentina–Switzerland (Jul 12). **Spain–Belgium kicks off today ~19:00 UTC** — this is the
