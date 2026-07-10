@@ -1,4 +1,4 @@
-# WC-2026 Winner Market — Undervaluation Scan (snapshot 2026-07-07 ~10:30 UTC; updated ~18:00 UTC)
+# WC-2026 Winner Market — Undervaluation Scan (snapshot 2026-07-07 ~10:30 UTC; updated Jul 7 ~18:00, Jul 10 ~12:30 UTC)
 
 *Three-agent live research: (1) Polymarket market state via gamma/CLOB APIs, (2) sharp-book
 fair value with Shin de-vig, (3) model/Elo fair value + platform-bias adjustments — applying the
@@ -50,6 +50,35 @@ Live PM moves (winner market, $87.9M 24h, sum of active mids 0.9915 — book sti
 | **Spain** | 18.05 → **18.75** (+0.7, no match played) | The undervaluation gap **narrowed to ~+1.5–2.5pp** vs the 20–21% fair estimate. Thesis intact but thinner; entry discipline matters more now (see execution plan). |
 | England | 14.45 → 15.25 | drift up; still fair vs 14.7–17 range |
 | France | 33.05 → 32.75 | unchanged-fair |
+
+## Update log — 2026-07-10 12:31 UTC re-pull: **T0 TRIGGERED on Spain**
+
+Bracket state: **France beat Morocco** (QF1) and **Switzerland beat Colombia** (R16) → QF4 =
+Argentina–Switzerland (Jul 12). **Spain–Belgium kicks off today ~19:00 UTC** — this is the
+T0 decision window (~6h at pull time). England–Norway is tomorrow (Jul 11).
+
+PM winner board (12:31 UTC, $31.7M 24h, mids sum 0.9895): France 38.55¢, Argentina 18.25¢,
+**Spain 16.45¢**, England 15.85¢, Norway 5.85¢, Belgium 2.15¢, Switzerland 1.85¢.
+
+**Fresh de-vig** (freshest same-vintage book board, Jul 8 pre-QF: France +180, Spain +360,
+Argentina +400, England +460, Norway +1400, Belgium +3000, Switzerland +3300 —
+[bookies.com](https://bookies.com/uk/news/world-cup-winner-odds-2026-usa-canada-mexico-8-july-france-favourites-over-argentina-spain-england),
+[ESPN](https://www.espn.com/espn/betting/story/_/id/48386952/espn-soccer-futbol-world-cup-betting-odds-championship-groups);
+overround 11.7%, Shin z=0.0176):
+
+| Team | PM | Shin fair | PM − fair | Verdict |
+|---|---|---|---|---|
+| **Spain** | .1645 | **.199** | **−3.4pp** | **UNDERVALUED — T0 triggers.** Fell 18.75→16.45 *without playing* and with **no negative news** — Yamal is fit and starting ([ESPN](https://www.espn.com/soccer/story/_/id/49314604/lamine-yamal-spain-luis-de-la-fuente-excited-belgium), [khelnow](https://khelnow.com/football/will-lamine-yamal-play-spain-vs-belgium-fifa-world-cup-2026)); Spain unbeaten, zero goals conceded. The drop looks like flow rotating to France post-QF1. |
+| Argentina | .1825 | .182 | +0.0pp | **Richness fully unwound — now exactly fair.** Short stays suspended. |
+| England | .1585 | .162 | −0.3pp | fair |
+| France | .3855 | .332* | +5.3pp* | ***Vintage-ambiguous***: the book board predates France's QF win; naive conditional fair ≈ .33/.752 ≈ .44 would make PM ~5pp *cheap*. Unresolvable without fresh post-QF book odds — no action. |
+| Norway / Belgium / Switzerland | .0585/.0215/.0185 | .055/.023/.021 | ±0.3pp | fair (longshot zone — leave) |
+
+**T0 action (per the $300 plan):** the Spain gap (−3.4pp on the freshest board; still ~−2pp even
+if live books have drifted Spain to +400) exceeds the ≥2pp threshold → **place the $120 maker bid
+at 16.4–16.5¢ before ~18:00 UTC** (stop quoting an hour before kickoff; never in-play). Caveat
+honestly logged: the Spain book quote is ~2 days old — if a live book shows Spain ≥ +430, the
+gap is inside costs and T0 lapses to no-trade. Next checkpoint: T1 after Spain–Belgium resolves.
 
 ## Consolidated fair-value table (10:30 UTC, before the Jul 7 evening matches)
 
