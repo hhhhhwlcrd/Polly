@@ -129,14 +129,11 @@ live bookmaker list** — followed by Falcons (14.0¢ vs 11–14%) and Aurora (1
 5. Polymarket book formation: at $4k volume, one $500 order moves everything; recheck before
    quoting.
 
-> **$70-budget revision (Jul 10):** with the combined WC+TI budget cut to $70 (see
-> `WC2026_UNDERVALUED.md` for the funding path from Binance), the TI sleeve shrinks to **one
-> GTC maker bid: TEAM VISION 100 shares @ .12 (~$12)**. The rest of the ladder below is
-> capital drag at this size — treat Phases 2–3 as re-deployment rules for whatever capital is
-> free after the World Cup sleeve resolves (Jul 19, i.e. exactly when bookmaker TI outrights
-> should post and Phase 2 begins).
+> **Budget note (Jul 10, corrected):** the $70 budget applies to the **World Cup sleeve only**
+> (see `WC2026_UNDERVALUED.md`, which also carries the Binance→Polymarket funding path). This
+> TI plan's $300 sizing below remains operative as written.
 
-## 5. Execution plan — $300 sleeve (re-evaluate every 1–2 weeks + in-tournament) [superseded at $70 — see note above]
+## 5. Execution plan — $300 sleeve (re-evaluate every 1–2 weeks + in-tournament)
 
 The book is a shell, so the sleeve is deployed as a **maker-bid ladder**, not purchases. Fills
 only happen when someone crosses down to us — we either buy below fair or don't trade at all.

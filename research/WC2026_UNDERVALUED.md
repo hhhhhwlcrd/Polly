@@ -117,7 +117,8 @@ and Argentina (sell) clear the taker hurdle; both clear the maker hurdle comfort
 
 ## Execution plan — ACTIONABLE $70 REVISION (Jul 10; supersedes the $300 sizing below)
 
-**Total budget $70 (currently USDT on Binance), covering BOTH World Cup and TI sleeves.**
+**World Cup budget: $70 (currently USDT on Binance). The TI sleeve is budgeted separately —
+see `TI2026_UNDERVALUED.md` §5 (its $300 maker-bid ladder remains operative).**
 
 ### Funding path: Binance → Polymarket (~$1–1.5 total cost, ~10–15 min)
 1. **Binance Convert: USDT → USDC** (fee-free, instant). Rationale: native USDC avoids the
@@ -133,19 +134,19 @@ and Argentina (sell) clear the taker hurdle; both clear the maker hurdle comfort
    Polygon/EVM, token = USDC. Wrong-network sends are unrecoverable. Also confirm the platform's
    ToS/geo-eligibility for your jurisdiction before funding.
 
-### $70 allocation (lands ≈ $68.5 after fees)
-| Sleeve | Size | Action |
+### $70 World Cup allocation (lands ≈ $68.5 after deposit fees)
+| Tranche | Size | Action |
 |---|---|---|
-| **WC — Spain T0 (live, triggered)** | **$55** | Maker bid 16.4–16.5¢ (~333 shares) **before ~18:00 UTC today**; cancel if unfilled at kickoff−1h |
-| **TI — one bid only** | **$12** | GTC maker bid TEAM VISION @ .12 (100 shares). At $70 total, the rest of the TI ladder is capital drag — skip Yandex/Falcons/Aurora |
-| Buffer | ~$1.5 | dust/fees |
+| **T0 — Spain (live, triggered)** | **$50** | Maker bid 16.4–16.5¢ (~303 shares) **before ~18:00 UTC today**; cancel if unfilled at kickoff−1h |
+| **T1 reserve** | **$18.5** | Post Spain–Belgium: add only if Spain still ≥2pp cheap on a fresh de-vig; or redeploy on a new ≥2pp gap among survivors; else hold |
 
-Scaled T1 rules (post Spain–Belgium): win + gap closed (≥26¢) → **sell half as maker** (locks
-~+60% on ~$27); win + still ≥2pp cheap → hold, nothing to add (no reserve at this size); loss →
-sleeve is down $55, **stop** — do not redeploy into the SFs unless a fresh de-vig shows ≥2pp.
-Honesty at this scale: total EV is roughly **+$5–9 if the edges are real**, i.e. ~2 coffees —
-the value of running this at $70 is process practice (funding, maker execution, checkpoint
-discipline), not the P&L. Deposit friction alone is ~2% of the bankroll.
+T1/T2 rules (post Spain–Belgium): win + gap closed (≥26¢) → **sell half as maker** (locks
+~+60% on ~$25); win + still ≥2pp cheap → add the $18.5; loss → sleeve is down $50, **stop** —
+redeploy the reserve into the SFs only on a fresh ≥2pp verified gap. Pre-final (T2): hold to the
+final only if still ≥2pp cheap vs the final-match de-vig, else sell everything as maker into the
+pre-final liquidity peak. Honesty at this scale: WC-sleeve EV is roughly **+$6–8 if the Spain
+edge is real**; deposit friction alone is ~2% of the bankroll — the value of running this at $70
+is process practice (funding, maker execution, checkpoint discipline) as much as the P&L.
 
 ## [superseded] Execution plan — $300 sleeve (2–3 re-evaluations before the final)
 
