@@ -87,7 +87,7 @@ moneyline de-vig: France 56.3 / Spain 43.7.
 | France | .3925 | .364 | **+2.8pp** | rich on PM |
 | England | .2095 | .200 | +1.0pp | fair-to-rich |
 | **Spain (held)** | .1995 | .210 | **−1.0pp** | **edge converged** — inside the 2pp/cost band |
-| **Argentina** | .1915 | .227 | **−3.5pp** | **new undervalued signal.** The Messi premium fully inverted: books rank Argentina 2nd; PM ranks them 4th, below England, after a dominant 3–1 QF |
+| **Argentina** | .1915 | .227 | **−3.5pp** | **new undervalued signal.** The Messi premium fully inverted: books rank Argentina 2nd; PM ranks them 4th, below England. (Correction: the QF was a 3–1 **extra-time** win, not a rout — mild fatigue caveat, but the +300 was posted post-match and prices it) |
 
 **Actions (recommended, per the plan's own edge rules):**
 1. **SELL all 303 Spain as maker at ~19.9–20.0¢** → ≈ $60.30, **locking +$10.30 (+20.6%)**.
@@ -106,6 +106,17 @@ moneyline de-vig: France 56.3 / Spain 43.7.
 
 Sleeve state if both orders execute: ≈ $79 gross value vs $68.5 deposited (+15% realized+cash
 before the Argentina bet resolves).
+
+### Refresh — Jul 12, 12:07 UTC (final pre-SF numbers)
+Board: France 38.85, **England 21.85 (rising)**, **Spain 20.05 (bid .200 — the exit fills
+here)**, **Argentina 18.95 (falling, $7.6M 24h)**. No Argentina team news (Messi played the QF
+and assisted — [Al Jazeera](https://www.aljazeera.com/sports/2026/7/12/argentina-defeat-switzerland-to-set-up-england-semifinal-at-world-cup-2026));
+the England-up/Argentina-down drift on their own SF pairing is flow, not information, and it
+**widens the Argentina gap to −3.75pp** while England is now +1.9pp rich — the same
+retail-vs-books divergence, sharper. Updated orders: **sell 303 Spain @ .200 = $60.60
+(+$10.60, +21.2%)**; **Argentina maker bid .190 (~210 shares ≈ $40)**; England–Argentina
+kicks off Wed Jul 15 ~19:00 ET — cancel unfilled bids at kickoff−1h. If Argentina keeps
+drifting to ≤18¢ with no news, do NOT chase beyond the $40 — the cluster cap holds.
 
 ## Update log — 2026-07-10 12:31 UTC re-pull: **T0 TRIGGERED on Spain** [executed & exited — see checkpoint above]
 
