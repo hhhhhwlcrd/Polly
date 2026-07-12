@@ -74,7 +74,40 @@ France 37.65, Spain 21.15, Argentina 17.65, England 14.85; remaining reserve **$
 - Standing rules unchanged: maker orders only, nothing in-play, reserve deploys only on a
   verified ≥2pp gap.
 
-## Update log — 2026-07-10 12:31 UTC re-pull: **T0 TRIGGERED on Spain** [executed — see ledger above]
+## PRE-SF CHECKPOINT — 2026-07-12 07:10 UTC: **SELL SPAIN, ROTATE TO ARGENTINA**
+
+Semis set: **France–Spain (Tue Jul 14, Dallas)**, **England–Argentina (Wed Jul 15, Atlanta)**;
+Argentina beat Switzerland 3–1 ([ESPN](https://www.espn.com/soccer/match/_/gameId/760513/switzerland-argentina)).
+Fresh post-QF book board ([FOX](https://www.foxsports.com/stories/soccer/world-cup-2026-champion-odds)):
+France +155, Argentina +300, Spain +330, England +350 (overround 9.7%, Shin z=0.032). SF
+moneyline de-vig: France 56.3 / Spain 43.7.
+
+| Team | PM (07:09 UTC) | Shin fair | PM − fair | Verdict |
+|---|---|---|---|---|
+| France | .3925 | .364 | **+2.8pp** | rich on PM |
+| England | .2095 | .200 | +1.0pp | fair-to-rich |
+| **Spain (held)** | .1995 | .210 | **−1.0pp** | **edge converged** — inside the 2pp/cost band |
+| **Argentina** | .1915 | .227 | **−3.5pp** | **new undervalued signal.** The Messi premium fully inverted: books rank Argentina 2nd; PM ranks them 4th, below England, after a dominant 3–1 QF |
+
+**Actions (recommended, per the plan's own edge rules):**
+1. **SELL all 303 Spain as maker at ~19.9–20.0¢** → ≈ $60.30, **locking +$10.30 (+20.6%)**.
+   Rationale: the entry thesis is complete — the 3.4pp dislocation we bought at 16.5 has closed
+   (+1.0pp residual is inside costs); holding through France is a ~43.7% coin flip with no edge.
+   *(Documented alternative for a lottery preference: hold through the SF — position dies or
+   ~doubles; not the process play.)*
+2. **Rotate $40 into Argentina: maker bid ≤19.2¢ (~208 shares)** — reserve $18.5 + ~$21.5 of
+   proceeds. The −3.5pp gap exceeds the 2pp threshold on a fresh same-day board (grade B:
+   single-source FOX consensus, partially corroborated by the SF moneylines). Order must rest
+   **before Wed's England–Argentina kickoff**; cancel at kickoff−1h if unfilled.
+3. Keep **~$39 cash** for the final checkpoint (T2, Jul 16–18): re-run the de-vig after both
+   SFs; sell Argentina into strength if it reprices ≥26–27¢ post-SF win; if Argentina loses,
+   sleeve still ends green (≈ $39 cash + dust vs $68.5 start… i.e. ≈ −$1.5 net) — the Spain
+   profit funds the Argentina risk.
+
+Sleeve state if both orders execute: ≈ $79 gross value vs $68.5 deposited (+15% realized+cash
+before the Argentina bet resolves).
+
+## Update log — 2026-07-10 12:31 UTC re-pull: **T0 TRIGGERED on Spain** [executed & exited — see checkpoint above]
 
 Bracket state: **France beat Morocco** (QF1) and **Switzerland beat Colombia** (R16) → QF4 =
 Argentina–Switzerland (Jul 12). **Spain–Belgium kicks off today ~19:00 UTC** — this is the
