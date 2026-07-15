@@ -74,7 +74,37 @@ France 37.65, Spain 21.15, Argentina 17.65, England 14.85; remaining reserve **$
 - Standing rules unchanged: maker orders only, nothing in-play, reserve deploys only on a
   verified ≥2pp gap.
 
-## PRE-SF2 CHECKPOINT — 2026-07-15 09:15 UTC (England–Argentina TODAY ~19:00 ET)
+## SLEEVE CLOSED — 2026-07-15 21:35 UTC: Argentina sold @ 43.5¢; no trade on the final
+
+**Argentina beat England** → final is **Spain vs Argentina, Sunday Jul 19** (MetLife).
+**Position exited: ~210 Argentina sold @ 43.5¢ = $91.35** into the post-win spike (price now
+41.95 — the exit beat the market by +1.55¢). Fresh book check on the final: Spain **−137 to
+−156** ([sportsbettingdime](https://www.sportsbettingdime.com/news/soccer/spain-vs-odds-world-cup-final-opening-moneyline-total/),
+[SI](https://www.si.com/betting/world-cup-champion-odds-spain-set-as-odds-on-favorite-argentina-gaining-ground-vs-england)) —
+de-vigged ≈ Spain 57–59 / Argentina 41–43. PM 58.15/41.95 is **inside the band on both sides:
+no ≥2pp gap → NO final trade.** The system ends the tournament in cash, by rule.
+
+### Closing ledger (assuming the Jul 12 Spain exit was taken)
+| Trade | In | Out | P&L |
+|---|---|---|---|
+| Spain 303 @ 16.5¢ → sold @ 20.0¢ | $50.00 | $60.60 | **+$10.60 (+21%)** |
+| Argentina ~210 @ ~19.0¢ → sold @ 43.5¢ | ~$39.90 | $91.35 | **+$51.45 (+129%)** |
+| **Sleeve** | **≈$68.50 deposited** | **≈$130.45 cash** | **≈ +90% in 8 days** |
+
+(The forgone branch is logged above: never selling Spain would have ≈$176 + the Argentina exit
+— variance both ways; both realized trades entered on verified ≥2pp gaps and exited by rule.)
+
+**Next steps:**
+1. **No World Cup final bet** — verify once more Sunday morning; act only if PM drifts ≥2pp
+   outside a fresh book de-vig (unlikely on a two-outcome book this liquid).
+2. **Roll to the TI sleeve:** EWC ends Jul 19; bookmaker TI outrights expected the following
+   week → that is TI **Phase 2** (`TI2026_UNDERVALUED.md` §5): first true Shin de-vig of the TI
+   board, deploy against ≥2pp gaps, re-check any filled Phase-1 bids. Keeping the ~$130 as pUSD
+   until then costs ~pennies in forgone yield; withdrawing and re-depositing costs ~$1 — either
+   is fine.
+3. Cancel any leftover resting WC orders.
+
+## PRE-SF2 CHECKPOINT — 2026-07-15 09:15 UTC (England–Argentina TODAY ~19:00 ET) [resolved — see above]
 
 **Spain beat France 2–0** (Oyarzabal pen, Porro; France never threatened —
 [ESPN](https://www.espn.com/soccer/match/_/gameId/760514/spain-france)). **Spain is in the
