@@ -74,7 +74,33 @@ France 37.65, Spain 21.15, Argentina 17.65, England 14.85; remaining reserve **$
 - Standing rules unchanged: maker orders only, nothing in-play, reserve deploys only on a
   verified ≥2pp gap.
 
-## PRE-SF CHECKPOINT — 2026-07-12 07:10 UTC: **SELL SPAIN, ROTATE TO ARGENTINA**
+## PRE-SF2 CHECKPOINT — 2026-07-15 09:15 UTC (England–Argentina TODAY ~19:00 ET)
+
+**Spain beat France 2–0** (Oyarzabal pen, Porro; France never threatened —
+[ESPN](https://www.espn.com/soccer/match/_/gameId/760514/spain-france)). **Spain is in the
+final** and trades **58.15¢**. Board: Spain 58.15 / England 22.65 / Argentina 19.65
+(sum 100.45 — fair). SF2 kicks off tonight; the final is Sunday Jul 19, MetLife.
+
+**Post-mortem on the Jul 12 "sell Spain at .200" call — owned honestly:** holding those 303
+shares would be worth **$176 today vs the $60.60 realized (+$115 foregone)**. The call was
+process-correct with the information at hand — the entry edge (3.4pp) had fully converged, and
+the SF was a 43.7% proposition at book-fair prices, i.e. an EV-neutral coin flip we weren't paid
+to take. The coin landed Spain's side. Reprice-capture gives up exactly these tails in exchange
+for not eating the 56.3% branch (where the sleeve would sit at ≈ −$0 instead of +$10.6 realized).
+No rule change follows from one branch outcome; that discipline is the strategy.
+
+**Tonight's decision tree:**
+
+| Holding | Status | Action |
+|---|---|---|
+| **Argentina ~210 sh @ ~.190** (if the Jul 12 bid filled) | 19.65¢, ≈ +3.4% MTM; still ~**3pp cheap** (reach-final de-vig ~54/46 Argentina; × ~42% vs Spain in the final → fair ≈ 22.5–23) | **HOLD through tonight's SF** per plan. Win → expect reprice toward **34–40¢** (conditional-on-advance value) → **sell at least half into strength before Sunday**; loss → resolves ~0, sleeve ends ≈ break-even overall (Spain profit funded it) |
+| England (none held) | 22.65¢ vs fair ≈ 19.3 | still **+3.3pp rich** — same retail flow story; nothing to do (no bids exist to short into meaningfully) |
+| **If Spain 303 sh were NOT sold on Jul 12** | worth **$176.17 (+252%)** | **SELL NOW at ~.58 as maker** — T2 rule: hold to the final only if ≥2pp cheap; at 58.15 vs ~56–58 fair (Spain ~55–60% vs either finalist) the price is fair-to-rich. Locking +252% is the trade of the sleeve; do not donate it back on a one-match binary |
+
+**Standing rules tonight:** no orders in-play; cancel any resting Argentina add at kickoff−1h;
+next checkpoint = T2 tomorrow morning (post-SF2), final decision window Jul 16–18.
+
+## PRE-SF CHECKPOINT — 2026-07-12 07:10 UTC: **SELL SPAIN, ROTATE TO ARGENTINA** [executed Jul 12; see post-mortem above]
 
 Semis set: **France–Spain (Tue Jul 14, Dallas)**, **England–Argentina (Wed Jul 15, Atlanta)**;
 Argentina beat Switzerland 3–1 ([ESPN](https://www.espn.com/soccer/match/_/gameId/760513/switzerland-argentina)).
