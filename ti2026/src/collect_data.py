@@ -76,10 +76,30 @@ def flatten_match(m: dict) -> tuple[dict, list[dict], list[dict]]:
         "series_type": m.get("series_type"),  # 0=BO1 1=BO3 2=BO5
         "first_blood_time": m.get("first_blood_time"),
     }
-    # 10-min gold advantage if the replay was parsed
+    # --- parsed-replay payload (None when version is null = unparsed) ---
+    row["parsed"] = m.get("version") is not None
     adv = m.get("radiant_gold_adv") or []
-    row["gold_adv_10"] = adv[10] if len(adv) > 10 else None
-    row["gold_adv_20"] = adv[20] if len(adv) > 20 else None
+    xadv = m.get("radiant_xp_adv") or []
+    for mnt in (10, 15, 20, 25, 30, 40):
+        row[f"gold_adv_{mnt}"] = adv[mnt] if len(adv) > mnt else None
+        row[f"xp_adv_{mnt}"] = xadv[mnt] if len(xadv) > mnt else None
+    # full curves + event streams power src/game_stats.py
+    row["radiant_gold_adv"] = adv or None
+    row["radiant_xp_adv"] = xadv or None
+    row["objectives"] = m.get("objectives") or None
+    # teamfights are large; keep only the fields the features use
+    tfs = m.get("teamfights") or []
+    row["teamfights"] = [
+        {
+            "start": tf.get("start"), "end": tf.get("end"), "deaths": tf.get("deaths"),
+            "players": [
+                {"deaths": p.get("deaths"), "gold_delta": p.get("gold_delta"),
+                 "xp_delta": p.get("xp_delta"), "damage": p.get("damage")}
+                for p in (tf.get("players") or [])
+            ],
+        }
+        for tf in tfs
+    ] or None
 
     players = []
     for p in m.get("players", []):

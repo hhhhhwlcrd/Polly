@@ -336,12 +336,318 @@ nb05 = nb(
     ]
 )
 
+# ----------------------------------------------------------------- 06
+nb06 = nb(
+    [
+        md(
+            "# 06 — Draft, bans and hero meta\n"
+            "\n"
+            "The draft layer: what the meta values (contest rate), what teams ban and\n"
+            "pick, how wide each team's and player's hero pool is, and — critically —\n"
+            "how the meta **shifted across the last patch**, which is what invalidates\n"
+            "pre-patch form. Also produces the ban table that prices the *Most Banned\n"
+            "Hero* market in notebook 08."
+        ),
+        code(SETUP),
+        code(
+            "from src.draft import (ban_table, contest_table, hero_winrates,\n"
+            "                       team_draft_style, player_hero_pool, meta_shift)\n"
+            "matches = pd.read_parquet(DATA / 'matches.parquet')\n"
+            "pb      = pd.read_parquet(DATA / 'picks_bans.parquet')\n"
+            "mp      = pd.read_parquet(DATA / 'match_players.parquet')\n"
+            "teams   = pd.read_parquet(DATA / 'teams.parquet')[['team_id','name']]\n"
+            "heroes  = pd.read_parquet(DATA / 'heroes.parquet') if (DATA/'heroes.parquet').exists() else None\n"
+            "print(f'{pb.match_id.nunique():,} drafted games, {len(pb):,} draft actions')\n"
+            "bans = ban_table(pb, heroes, matches); bans.head(20)"
+        ),
+        code(
+            "# Contest rate is the honest meta measure: picks+bans per game.\n"
+            "# A hero at ~1.0 is removed from the board every single game.\n"
+            "ct = contest_table(pb, heroes)\n"
+            "ct.head(25)"
+        ),
+        code(
+            "# Which heroes actually WIN when they get through the draft?\n"
+            "hw = hero_winrates(pb, matches, heroes, min_picks=10)\n"
+            "print('Best:'); print(hw.head(12).to_string(index=False))\n"
+            "print('\\nWorst:'); print(hw.tail(12).to_string(index=False))"
+        ),
+        code(
+            "# Team draft signatures: wide/unpredictable vs narrow/comfort-based\n"
+            "tds = team_draft_style(pb, matches, teams)\n"
+            "tds.head(16)"
+        ),
+        code(
+            "# Player hero pools (breadth + signature heroes)\n"
+            "player_hero_pool(mp, heroes, min_games=10).head(25)"
+        ),
+        code(
+            "# META SHIFT across the last patch boundary — run this the day a patch lands.\n"
+            "patches = sorted(matches.patch.dropna().unique())\n"
+            "print('patches present:', patches)\n"
+            "if len(patches) >= 2:\n"
+            "    shift = meta_shift(pb, matches, int(patches[-2]), int(patches[-1]), heroes)\n"
+            "    display(shift)\n"
+            "else:\n"
+            "    print('need two patches in the sample to compute a shift')"
+        ),
+    ]
+)
+
+# ----------------------------------------------------------------- 07
+nb07 = nb(
+    [
+        md(
+            "# 07 — Game-statistics deep dive (team style profiles)\n"
+            "\n"
+            "Turns parsed replays into a **style vector** per team: economy timing\n"
+            "curves, laning strength by role, objective control, teamfight economics,\n"
+            "pace, and lead-conversion. These are the features that explain *how* a\n"
+            "team wins — and they feed both the matchup model (03) and the\n"
+            "derivative-market models (08).\n"
+            "\n"
+            "Requires parsed replays: rows where `parsed == True`. Unparsed matches\n"
+            "silently carry null timelines, so always check coverage first."
+        ),
+        code(SETUP),
+        code(
+            "from src.game_stats import (team_style_profile, timing_features, lane_features,\n"
+            "                            objective_features, teamfight_features,\n"
+            "                            pace_features, to_team_long, opponent_adjust)\n"
+            "matches = pd.read_parquet(DATA / 'matches.parquet')\n"
+            "mp      = pd.read_parquet(DATA / 'match_players.parquet')\n"
+            "teams   = pd.read_parquet(DATA / 'teams.parquet')[['team_id','name']]\n"
+            "cov = matches.parsed.mean() if 'parsed' in matches.columns else float('nan')\n"
+            "print(f'parsed-replay coverage: {cov:.0%}  (timeline/objective features need this)')\n"
+            "prof = team_style_profile(matches, mp, teams)\n"
+            "prof.head(16)"
+        ),
+        code(
+            "# Timing profile: who is ahead when? scaling_slope>0 = grows leads late\n"
+            "tf = timing_features(matches).merge(teams, on='team_id', how='left')\n"
+            "cols = [c for c in tf.columns if c.startswith('gold_adv')] + ['scaling_slope']\n"
+            "tf.nlargest(16, 'gold_adv_20')[['name'] + cols].round(0)"
+        ),
+        code(
+            "import matplotlib.pyplot as plt\n"
+            "top = prof.nlargest(8, 'games')\n"
+            "fig, ax = plt.subplots(1, 2, figsize=(13, 4.5))\n"
+            "mins = [10, 15, 20, 25, 30, 40]\n"
+            "for _, r in top.iterrows():\n"
+            "    ys = [r.get(f'gold_adv_{m}') for m in mins]\n"
+            "    ax[0].plot(mins, ys, marker='o', label=str(r.get('name', r.team_id))[:16])\n"
+            "ax[0].axhline(0, color='k', lw=.8); ax[0].set(xlabel='minute', ylabel='mean gold adv',\n"
+            "    title='Economy timing curves')\n"
+            "ax[0].legend(fontsize=7)\n"
+            "if {'close_rate','comeback_rate'} <= set(prof.columns):\n"
+            "    ax[1].scatter(prof.close_rate, prof.comeback_rate, alpha=.6)\n"
+            "    for _, r in top.iterrows():\n"
+            "        ax[1].annotate(str(r.get('name'))[:12], (r.close_rate, r.comeback_rate), fontsize=7)\n"
+            "    ax[1].set(xlabel='closes leads (win | +3k at 20)', ylabel='comebacks (win | -3k at 20)',\n"
+            "              title='Lead conversion')\n"
+            "plt.tight_layout()"
+        ),
+        code(
+            "# Objectives & teamfights: control vs chaos\n"
+            "obj = objective_features(matches).merge(teams, on='team_id', how='left')\n"
+            "tfi = teamfight_features(matches).merge(teams, on='team_id', how='left')\n"
+            "display(obj.nlargest(12, 'first_tower_rate').round(3))\n"
+            "display(tfi.nlargest(12, 'fight_gold_swing').round(1))"
+        ),
+        code(
+            "# OPPONENT ADJUSTMENT — the anti-soft-schedule guard.\n"
+            "from src.model import fit_elo\n"
+            "elo, _ = fit_elo(matches)\n"
+            "long = to_team_long(matches)\n"
+            "long['gold20'] = long.get('gold_adv_20') * long['sign'] if 'gold_adv_20' in long else np.nan\n"
+            "adj = opponent_adjust(long, 'gold20', elo)\n"
+            "adj.merge(teams, on='team_id', how='left').nlargest(15, 'gold20_adj').round(0)"
+        ),
+        code(
+            "# RADIANT/DIRE split per team + tournament-wide rate (feeds notebook 08)\n"
+            "pf = pace_features(matches)\n"
+            "long = to_team_long(matches)\n"
+            "rad_rate = long.loc[long.is_radiant, 'win'].mean()\n"
+            "print(f'sample-wide RADIANT win rate: {rad_rate:.4f}  (n={long.is_radiant.sum():,} games)')\n"
+            "print('use this as prior_p in derivatives.radiant_dire_market -- but filter to the CURRENT PATCH first:')\n"
+            "cur = matches.patch.max()\n"
+            "lc = to_team_long(matches[matches.patch == cur])\n"
+            "print(f'current patch ({cur}) radiant win rate: {lc.loc[lc.is_radiant, \"win\"].mean():.4f} (n={lc.is_radiant.sum():,})')"
+        ),
+    ]
+)
+
+# ----------------------------------------------------------------- 08
+nb08 = nb(
+    [
+        md(
+            "# 08 — Pricing the TI derivative markets (Radiant/Dire · Longest game · Most banned)\n"
+            "\n"
+            "These three books are where match data beats the crowd: the outcome is a\n"
+            "public statistic, so a model of the data-generating process competes\n"
+            "against a thin retail book rather than against sharp bettors.\n"
+            "\n"
+            "**Discipline:** each model's answer is dominated by one input (the true\n"
+            "current-patch radiant rate; the duration tail; the ban prior). Always run\n"
+            "the sensitivity view before sizing — a point estimate here is a lie."
+        ),
+        code(SETUP),
+        code(
+            "from src.derivatives import (radiant_dire_market, radiant_dire_sensitivity,\n"
+            "                             longest_game_market, most_banned_hero_market,\n"
+            "                             compare_to_book)\n"
+            "from src.polymarket import all_ti_books\n"
+            "books = all_ti_books()\n"
+            "for k, b in books.items():\n"
+            "    print(f\"\\n=== {k}: {b.attrs['title']} | vol ${b.attrs['volume']:,.0f} | \"\n"
+            "          f\"priced-sum {b.attrs['priced_sum']:.3f} bid-sum {b.attrs['bid_sum']:.3f}\")\n"
+            "    print(b.head(8).to_string(index=False))"
+        ),
+        md(
+            "## A. Radiant vs Dire\n"
+            "Set `PRIOR_P` from notebook 07's **current-patch** radiant rate, and\n"
+            "`GAMES_TOTAL` from the actual TI format. Update `PLAYED`/`RAD_WINS` daily\n"
+            "as the tournament progresses — every game shrinks the uncertainty."
+        ),
+        code(
+            "PRIOR_P     = 0.530   # <- current-patch pro radiant win rate (notebook 07)\n"
+            "PRIOR_K     = 400     # pseudo-games of confidence in that prior\n"
+            "PLAYED      = 0       # TI games completed so far\n"
+            "RAD_WINS    = 0       # of which won by Radiant\n"
+            "GAMES_LEFT  = 180     # remaining games in the tournament\n"
+            "r = radiant_dire_market(PLAYED, RAD_WINS, GAMES_LEFT, PRIOR_P, PRIOR_K)\n"
+            "print(r['fair_prices'], '| posterior p = %.4f +- %.4f' % (r['posterior_p_mean'], r['posterior_p_sd']))\n"
+            "print('\\nSENSITIVITY  P(Radiant)  [rows = true p, cols = total games]')\n"
+            "print(radiant_dire_sensitivity().to_string())\n"
+            "book = dict(zip(books['radiant_dire'].outcome, books['radiant_dire'].mid))\n"
+            "model = pd.DataFrame({'outcome': list(r['fair_prices']), 'p': list(r['fair_prices'].values())})\n"
+            "compare_to_book(model, book, 'outcome', 'p')"
+        ),
+        md(
+            "## B. Longest single game\n"
+            "Feed a **same-patch** duration sample (hundreds of games). `empirical`\n"
+            "cannot produce a game longer than your sample's max — if the buckets sit\n"
+            "near/above that max, `gpd` is the only honest model."
+        ),
+        code(
+            "matches = pd.read_parquet(DATA / 'matches.parquet')\n"
+            "cur = matches.patch.max()\n"
+            "dur = (matches.loc[matches.patch == cur, 'duration'] / 60).dropna().to_numpy()\n"
+            "print(f'patch {cur}: n={len(dur)} median={np.median(dur):.1f} p99={np.quantile(dur,.99):.1f} max={dur.max():.1f}')\n"
+            "BUCKETS = [(91,95),(96,100),(101,105),(106,110),(111,None)]\n"
+            "LONGEST_SO_FAR = 0.0   # <- update from live TI results\n"
+            "for tm in ('empirical','gpd'):\n"
+            "    out = longest_game_market(dur, GAMES_LEFT, BUCKETS, LONGEST_SO_FAR, tail_model=tm)\n"
+            "    print(f\"\\n[{tm}] E[max]={out.attrs['sim_max_mean']:.1f} p95={out.attrs['sim_max_p95']:.0f}\")\n"
+            "    print(out.to_string(index=False))"
+        ),
+        md(
+            "## C. Most banned hero\n"
+            "Dirichlet-multinomial forward simulation from bans so far + a same-patch\n"
+            "prior. The tie mass matters: the book resolves ties alphabetically, so\n"
+            "treat `p_tie_any` as a haircut on the leader."
+        ),
+        code(
+            "from src.draft import ban_table\n"
+            "pb     = pd.read_parquet(DATA / 'picks_bans.parquet')\n"
+            "heroes = pd.read_parquet(DATA / 'heroes.parquet') if (DATA/'heroes.parquet').exists() else None\n"
+            "# prior = ban shares from recent same-patch tier-1 play\n"
+            "prior_tbl = ban_table(pb[pb.match_id.isin(matches.loc[matches.patch==cur,'match_id'])], heroes)\n"
+            "prior_rates = prior_tbl.set_index('hero_id')['bans']\n"
+            "TI_BANS_SO_FAR = prior_rates * 0   # <- replace with live TI ban counts\n"
+            "res = most_banned_hero_market(TI_BANS_SO_FAR, games_played=0,\n"
+            "                              games_remaining=GAMES_LEFT, prior_rates=prior_rates)\n"
+            "print('tie mass:', round(res.attrs['p_tie_any'], 4), '| ban slots left:', res.attrs['remaining_ban_slots'])\n"
+            "if heroes is not None:\n"
+            "    nm = dict(zip(heroes.id, heroes.localized_name))\n"
+            "    res['hero'] = res.hero_id.map(nm)\n"
+            "res.head(15)"
+        ),
+        md(
+            "**Decision rule** (from `research/STRATEGY_SELECTION.md`): trade only where\n"
+            "the model edge survives fees + half-spread **and** the book is genuinely\n"
+            "thin (no bid = post a bid, never cross a 0.49 placeholder ask). Size with\n"
+            "fractional Kelly and treat all three markets as ONE cluster — they are\n"
+            "driven by the same tournament and correlate."
+        ),
+    ]
+)
+
+# ----------------------------------------------------------------- 09
+nb09 = nb(
+    [
+        md(
+            "# 09 — Live TI tracker (run daily during the tournament)\n"
+            "\n"
+            "One place to refresh: pull the live books, recompute the derivative fair\n"
+            "values from tournament-to-date statistics, and re-check the winner market\n"
+            "against the model. Everything below reads the manual state block first —\n"
+            "update those numbers from the day's results, then run all cells."
+        ),
+        code(SETUP),
+        code(
+            "# ---- LIVE STATE (update daily) ----\n"
+            "STATE = dict(\n"
+            "    games_played   = 0,      # total GAMES (not series) completed at TI\n"
+            "    radiant_wins   = 0,\n"
+            "    games_left     = 180,\n"
+            "    longest_so_far = 0.0,    # minutes\n"
+            "    prior_p        = 0.530,  # current-patch radiant rate (notebook 07)\n"
+            ")\n"
+            "TI_BAN_COUNTS = {}           # hero_id -> bans so far at TI\n"
+            "STATE"
+        ),
+        code(
+            "from src.polymarket import all_ti_books\n"
+            "from src.derivatives import radiant_dire_market, longest_game_market, compare_to_book\n"
+            "books = all_ti_books()\n"
+            "w = books['winner']\n"
+            "print(f\"WINNER BOOK | vol ${w.attrs['volume']:,.0f} | 24h ${w.attrs['volume24h']:,.0f} | \"\n"
+            "      f\"priced-sum {w.attrs['priced_sum']:.3f}\")\n"
+            "w[['outcome','mid','bid','ask','spread','volume24h']].head(16)"
+        ),
+        code(
+            "r = radiant_dire_market(STATE['games_played'], STATE['radiant_wins'],\n"
+            "                        STATE['games_left'], STATE['prior_p'], 400)\n"
+            "rd = books['radiant_dire']\n"
+            "print('model:', r['fair_prices'])\n"
+            "print(rd[['outcome','mid','bid','ask']].to_string(index=False))\n"
+            "model = pd.DataFrame({'outcome': list(r['fair_prices']), 'p': list(r['fair_prices'].values())})\n"
+            "compare_to_book(model, dict(zip(rd.outcome, rd.mid)), 'outcome', 'p')"
+        ),
+        code(
+            "# Rolling check: is THIS tournament's radiant rate drifting from the prior?\n"
+            "if STATE['games_played'] >= 20:\n"
+            "    obs = STATE['radiant_wins'] / STATE['games_played']\n"
+            "    se  = (obs * (1 - obs) / STATE['games_played']) ** 0.5\n"
+            "    print(f\"TI-to-date radiant rate {obs:.3f} +- {se:.3f} (95% CI \"\n"
+            "          f\"{obs-1.96*se:.3f}-{obs+1.96*se:.3f}) vs prior {STATE['prior_p']:.3f}\")\n"
+            "    print('If the CI excludes the prior, trust the tournament sample more (raise its weight).')\n"
+            "else:\n"
+            "    print('too few games for a meaningful in-tournament read')"
+        ),
+        md(
+            "### Daily checklist\n"
+            "1. Update `STATE` and `TI_BAN_COUNTS` from the day's results.\n"
+            "2. Re-run notebooks 06/07 if new parsed matches were collected.\n"
+            "3. Re-price all three derivative books; act only on edges that survive\n"
+            "   costs **and** sit in a book with no competing bid.\n"
+            "4. Cancel resting orders before a team's elimination series (adverse\n"
+            "   selection), and re-check after every patch/roster event."
+        ),
+    ]
+)
+
 for name, obj in {
     "01_data_collection.ipynb": nb01,
     "02_player_performance.ipynb": nb02,
     "03_team_model.ipynb": nb03,
     "04_team_state.ipynb": nb04,
     "05_undervalued_vs_polymarket.ipynb": nb05,
+    "06_draft_and_meta.ipynb": nb06,
+    "07_game_stats_deep_dive.ipynb": nb07,
+    "08_derivative_markets.ipynb": nb08,
+    "09_live_ti_tracker.ipynb": nb09,
 }.items():
     NB_DIR.mkdir(parents=True, exist_ok=True)
     (NB_DIR / name).write_text(json.dumps(obj, indent=1))
