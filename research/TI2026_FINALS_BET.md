@@ -373,3 +373,57 @@ and **LGD at .0545 is already eliminated** and cannot add heroes, so it should b
 
 **Combined $100: EV ≈ +$11 on the model's raw numbers, ≈ +$6 after the confidence haircuts.**
 Still ~4x Kelly on these edges — same overbetting caveat as §7.
+
+---
+
+## 9. Conservative $100 Yandex allocation (QF day)
+
+**What a Yandex bet actually is:** a bet on the *prior-heavy* worldview — that season pedigree
+(#2 pre-TI Elo, three titles: DreamLeague S27, Wallachia S7, BLAST Slam VII) outweighs a 2–3
+Swiss whose only wins came against HULIGANI (0–4) and Team Resilience. Every Yandex expression is
+**+EV only under that view**:
+
+| Bet | Ask | Fair (equal-wt) | EV/$ | Range across scenarios |
+|---|---|---|---|---|
+| **Yandex +1.5 games** (wins ≥1) | .72 | .703 | −3.2% | −13.7% … **+6.1%** |
+| Yandex match winner | .46 | .438 | −6.4% | −28.3% … **+13.6%** |
+| Yandex Game 1 winner | .47 | .458 | −4.2% | −18.7% … +9.1% |
+| Yandex to win TI (outright) | .085 | .086 | −1.9% | −63.9% … +62.0% |
+
+The **+1.5 handicap is the least-bad and by far the lowest-variance vehicle** (~70% win rate), so
+it carries the core of a conservative structure.
+
+**The allocation**
+
+| Stake | Bet | Order | Shares |
+|---|---|---|---|
+| **$40** | Yandex **+1.5 games** (wins ≥1 game) | buy @ **.72** | 55.6 |
+| **$20** | Yandex **match winner** | buy @ **.46** | 43.5 |
+| **$25** | **NO on "111+"** (longest game) | buy @ **.86** | 29.1 |
+| **$15** | cash, unstaked | — | — |
+
+The NO-111+ leg is the only genuinely +EV bet on the board (+4.2%, ~90% win, uncorrelated with
+Yandex) and it exists here to offset the vig you pay on the Yandex legs.
+
+**Outcome distribution**
+
+| Scenario | Prob | Net P&L |
+|---|---|---|
+| Yandex 2–0 or 2–1, no 111+ game | 39.4% | **+$43.10** |
+| Yandex loses 1–2, no 111+ game | 23.9% | −$0.37 |
+| Yandex swept 0–2, no 111+ game | 26.7% | −$55.93 |
+| Yandex wins, 111+ game happens | 4.4% | +$14.03 |
+| Yandex loses 1–2, 111+ game | 2.7% | −$29.44 |
+| Yandex swept 0–2, 111+ game | 3.0% | −$85.00 |
+
+**EV −$0.72 · P(ahead) 43.8% · P(flat or better) 67.7% · worst case −$85** (the $15 cash is never
+at risk). By worldview: **prior-heavy +$6.96 · balanced +$0.15 · form-heavy −$9.27.**
+
+**The design property that makes this conservative:** if Yandex wins *even one game* — 70.3% of the
+time — the handicap leg carries you to roughly break-even (−$0.37). You only take a real loss on a
+0–2 sweep. Compare a naive $100 straight on the match winner: 43.8% to win $117, 56.2% to lose the
+lot, EV −$6.40.
+
+**If you want more upside instead:** swap $10 of the handicap into the outright at .085 (11.8x
+payoff). That raises the ceiling a lot and the variance with it — it is the opposite of this
+structure's intent.
