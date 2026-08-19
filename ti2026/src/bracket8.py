@@ -110,6 +110,79 @@ def simulate_main_event(
     return out
 
 
+def simulate_ti15(
+    qf: list[tuple[str, str]],
+    ratings: dict[str, float],
+    n_sims: int = 200_000,
+    rating_sd: float = 0.0,
+    bo: int = 3,
+    bo_gf: int = 5,
+    seed: int = 23,
+) -> pd.DataFrame:
+    """TI-2026 Main Event: 8-team double elim where ALL EIGHT start in the UB.
+
+    Confirmed structure (Aug 20-23): four UB quarter-finals; QF losers form LB
+    round 1; 14 series total; everything Bo3 except a Bo5 grand final with no
+    upper-bracket advantage.
+
+        UBQF1..4 -> UBSF1 (W1 v W2), UBSF2 (W3 v W4) -> UBF -> GF
+        LB R1: L1 v L2, L3 v L4
+        LB R2: LB-R1 winners v UBSF losers (cross-seeded to opposite half)
+        LB SF -> LB Final (v UBF loser) -> GF
+
+    Because every team starts level, price differences here are *pure strength
+    judgments* — unlike a pre-seeded bracket, there is no structural handicap
+    to net out. `rating_sd` injects per-sim rating noise for honest CIs.
+    """
+    rng = np.random.default_rng(seed)
+    teams = [t for pair in qf for t in pair]
+    champ = {t: 0 for t in teams}
+    gf_app = {t: 0 for t in teams}
+    top3 = {t: 0 for t in teams}
+    top4 = {t: 0 for t in teams}
+
+    for _ in range(n_sims):
+        r = {t: ratings[t] + (rng.normal(0, rating_sd) if rating_sd else 0.0) for t in teams}
+
+        def play(a: str, b: str, n: int = bo) -> tuple[str, str]:
+            p = series_prob(map_prob(r[a], r[b]), n)
+            return (a, b) if rng.random() < p else (b, a)
+
+        # upper bracket
+        w1, l1 = play(*qf[0]); w2, l2 = play(*qf[1])
+        w3, l3 = play(*qf[2]); w4, l4 = play(*qf[3])
+        sw1, sl1 = play(w1, w2)          # UB SF1 (top half)
+        sw2, sl2 = play(w3, w4)          # UB SF2 (bottom half)
+        ubf_w, ubf_l = play(sw1, sw2)
+
+        # lower bracket
+        lb1a, _ = play(l1, l2)           # losers eliminated (7th-8th)
+        lb1b, _ = play(l3, l4)
+        lb2a, _ = play(lb1a, sl2)        # cross-seed: opposite half's UBSF loser
+        lb2b, _ = play(lb1b, sl1)
+        lbsf_w, lbsf_l = play(lb2a, lb2b)   # loser = 4th
+        lbf_w, lbf_l = play(lbsf_w, ubf_l)  # loser = 3rd
+
+        champion, runner_up = play(ubf_w, lbf_w, bo_gf)
+        champ[champion] += 1
+        gf_app[ubf_w] += 1; gf_app[lbf_w] += 1
+        for t in (champion, runner_up, lbf_l):
+            top3[t] += 1
+        for t in (champion, runner_up, lbf_l, lbsf_l):
+            top4[t] += 1
+
+    out = pd.DataFrame({
+        "team": teams,
+        "rating": [ratings[t] for t in teams],
+        "p_champion": [champ[t] / n_sims for t in teams],
+        "p_grand_final": [gf_app[t] / n_sims for t in teams],
+        "p_top3": [top3[t] / n_sims for t in teams],
+        "p_top4": [top4[t] / n_sims for t in teams],
+    }).sort_values("p_champion", ascending=False).reset_index(drop=True)
+    out["mc_se"] = np.sqrt(out.p_champion * (1 - out.p_champion) / n_sims).round(4)
+    return out
+
+
 def bracket_advantage(ratings_equal: float = 1500.0, n_sims: int = 60_000) -> pd.DataFrame:
     """How much is an upper-bracket start worth, all else equal?
 

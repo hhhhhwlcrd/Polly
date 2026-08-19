@@ -1,0 +1,200 @@
+# TI 2026 Main Event — Statistical Analysis & Bet Recommendation
+
+*Snapshot 2026-08-19 ~10:35 UTC. Main Event Aug 20–23, Shanghai. Winner book: $1,698,029 volume,
+$133k/24h. Model: `ti2026/src/bracket8.py` (8-team double-elim Monte Carlo). Supersedes the
+Aug-14 pricing in `TI2026_MARKET_ANALYSIS.md`.*
+
+---
+
+## 0. The answer in one paragraph
+
+**The winner market is now efficiently priced, and at the ask there is no bet with a reliable
+edge.** TEAM VISION at 42¢ is correctly the favourite — my balanced model says 40.8% against a
+39.3% de-vigged market, i.e. the book has it right to within noise. The clearest *mispricings*
+are all on the sell side (Team Spirit and 1w Team are too expensive in every scenario I ran), and
+you cannot easily sell in this book. **If you want a winner bet, VISION is the honest pick and
+you are paying only ~1–2pp of vig for it. If you want +EV, don't cross the ask — the vig at the
+ask is 13.3%, and the genuinely mispriced market right now is the "longest game" book, not the
+winner book.**
+
+---
+
+## 1. Where the tournament stands
+
+The Swiss stage finished Aug 16. **All eight survivors start in the UPPER bracket** — there is no
+pre-seeded lower bracket, so price differences are *pure strength judgments* with no structural
+handicap to net out. 14 series, all Bo3 except a Bo5 grand final with no upper-bracket advantage.
+
+**Quarterfinals, Thu Aug 20** (the three direct qualifiers chose their opponents):
+
+| Match | Model P(advance) |
+|---|---|
+| 1w Team vs **Team Spirit** | 42.5% / **57.5%** |
+| **TEAM VISION** vs BoomBoys | **72.3%** / 27.7% |
+| **Team Liquid** vs Team Yandex | **55.4%** / 44.6% |
+| Nigma Galaxy vs **Team Falcons** | 38.5% / **61.5%** |
+
+VISION used the #1 seed's pick to draw **BoomBoys — the weakest survivor (2–3 Swiss)**. That is a
+real, earned advantage and it is already in the prices.
+
+**Final Swiss form:**
+
+| Team | Series | Games | Game WR | Read |
+|---|---|---|---|---|
+| TEAM VISION | 4–0 | 8–2 | **80%** | Only undefeated team; beat Falcons, Spirit, BoomBoys |
+| Nigma Galaxy | 4–1 | 8–2 | **80%** | Four straight 2–0s — but vs OG (1–4), LGD, Vici (2–3); one real scalp (Spirit) |
+| Team Liquid | 4–1 | 9–5 | 64% | Grindy; three of four wins went 3 games |
+| Team Spirit | 3–2 | n/p | n/p | 3–0 start, then **0–2 to VISION and 0–2 to Nigma back-to-back** |
+| 1w Team | 3–2 | n/p | n/p | Beat Nigma and Falcons; lost to BoomBoys, Liquid |
+| Team Falcons | 3–2 | 8–7 | **53%** | Worst game rate of the survivors; every series went 3 |
+| BoomBoys | 2–3 | n/p | n/p | Worst survivor record |
+| Team Yandex | 2–3 | n/p | n/p | Wins only over HULIGANI (0–4) and Resilience |
+
+---
+
+## 2. The model
+
+Structure validated first: with eight identical teams the simulator returns 12.5% each — the
+bracket is symmetric, as it should be. (For contrast, a *pre-seeded* 4-UB/4-LB bracket is worth
+21.8% vs 3.2% per seat — a 6.9x edge. That asymmetry does **not** apply here.)
+
+Ratings are the honest problem: five Bo3 series is ~10–14 games, and a game win rate from 10
+games carries a ±13pp standard error. So rather than assert one rating set, I ran three, varying
+only how much weight the Swiss stage gets against pre-TI evidence (season titles, EWC 2026,
+GosuGamers Elo):
+
+**P(champion), model vs Shin-de-vigged market:**
+
+| Team | S1 prior-heavy | S2 balanced | S3 form-heavy | Market |
+|---|---|---|---|---|
+| TEAM VISION | 30.3 | **40.8** | 53.5 | **39.3** |
+| Team Spirit | 11.3 | 9.3 | 6.4 | 12.6 |
+| Team Liquid | 10.9 | 13.0 | 14.7 | 12.1 |
+| Team Falcons | 14.8 | 12.4 | 8.6 | 10.2 |
+| Team Yandex | 14.1 | 8.4 | 3.2 | 7.5 |
+| 1w Team | 5.8 | 4.8 | 3.1 | 6.6 |
+| BoomBoys | 10.0 | 6.9 | 3.6 | 5.8 |
+| Nigma Galaxy | 2.8 | 4.4 | 6.9 | 5.8 |
+
+The market sits almost exactly on the **balanced** scenario. That is a strong sign of an
+efficient book: it is neither over-reacting to Swiss form nor ignoring it.
+
+---
+
+## 3. Why almost every edge dies at the ask
+
+| | Sum |
+|---|---|
+| Best bids | 1.007 |
+| Mids | 1.070 |
+| **Asks** | **1.133** |
+
+Spreads are 1–2¢ on 6–13¢ contracts — **8–25% of the contract price**. Buying at the ask means
+paying a 13.3% vig, which swamps every edge in the table above.
+
+**Edge vs the ask, net of the taker fee (percentage points):**
+
+| Team | Ask | S1 prior | S2 balanced | S3 form | Worst | Best |
+|---|---|---|---|---|---|---|
+| TEAM VISION | .42 | −12.4 | −1.9 | **+10.8** | −12.4 | +10.8 |
+| Team Yandex | .083 | **+5.6** | −0.1 | −5.3 | −5.3 | +5.6 |
+| BoomBoys | .07 | +2.8 | −0.3 | −3.6 | −3.6 | +2.8 |
+| Team Falcons | .12 | +2.5 | +0.1 | −3.7 | −3.7 | +2.5 |
+| Team Liquid | .14 | −3.5 | −1.4 | +0.3 | −3.5 | +0.3 |
+| Nigma Galaxy | .079 | −5.3 | −3.7 | −1.2 | −5.3 | −1.2 |
+| 1w Team | .081 | −2.5 | −3.5 | −5.2 | −5.2 | −2.5 |
+| Team Spirit | .14 | −3.1 | −5.1 | −8.0 | −8.0 | −3.1 |
+
+**Every single team has a negative worst case.** Only VISION under a form-heavy view (+10.8)
+and Yandex under a prior-heavy view (+5.6) offer real edge, and those are bets on a *rating
+philosophy*, not on a mispricing.
+
+**Robust findings (same sign in all three scenarios):**
+- **Team Spirit is overpriced** (−3.1 to −8.0). Consistent with the crowd-favourite premium this
+  project has documented before: big fanbase, EWC-2025 pedigree, but a 0–2/0–2 collapse to
+  VISION and Nigma at the end of the Swiss.
+- **1w Team is overpriced** (−2.5 to −5.2).
+- **Nigma Galaxy is overpriced** (−5.3 to −1.2) — the classic hot-qualifier trap: an 80% game
+  rate built largely against OG (1–4), LGD and Vici.
+
+---
+
+## 4. The recommendation
+
+**Primary: if you want a winner bet, buy TEAM VISION — but understand what you are buying.**
+At 42¢ you are paying ~1–2pp over fair. That is cheap by betting standards (a sportsbook would
+charge 5%+), and VISION is the correct favourite on every piece of evidence: only undefeated
+team, best game rate, EWC 2026 champion, DreamLeague S29 champion, #1 pre-TI Elo, beat three of
+the seven other survivors head-to-head in the Swiss, and drew the weakest opponent in the QF.
+It is **not value**, it is a fairly-priced bet on the best team.
+
+**Do not buy Team Spirit at 14¢, 1w at 8.1¢, or Nigma at 7.9¢** — negative in every scenario.
+
+**Better than any of the above: don't cross the ask.** Maker bids that clear a 3pp edge under
+the conservative balanced model:
+
+| Team | Model (balanced) | Bid at or below | Current bid / ask |
+|---|---|---|---|
+| TEAM VISION | 40.8% | **.378** | .400 / .420 |
+| Team Liquid | 13.0% | .100 | .120 / .140 |
+| Team Falcons | 12.4% | .094 | .100 / .120 |
+
+A resting VISION bid at .375–.38 converts a −1.9pp taker trade into a +3pp maker trade, costs
+zero fees, and earns rebates. It may not fill — that is the trade-off.
+
+**Sizing.** This is one cluster (all eight outcomes resolve off the same tournament), so the
+≤15%-of-bankroll cluster cap from `STRATEGY_SELECTION.md` applies to the whole TI book. On the
+~$130 you have, that is **~$20 total** across everything TI. A VISION position of $12–15 is the
+sensible ceiling.
+
+### The better bet is not in this market
+
+The **longest-game** book is genuinely mispriced. State: group stage complete at 109 games, the
+record is still the 94:38 VISION–Falcons game from Day 1, and only ~37 games remain.
+
+| Bucket | Model (range across tail models) | Market |
+|---|---|---|
+| **91-95 (i.e. the record holds)** | **0.52 – 0.67** | mid .46, **bid .18 / ask .74** |
+| 96-100 | 0.11 – 0.14 | ask .66 |
+| 101-105 | 0.08 – 0.10 | ask .65 |
+| 106-110 | 0.05 – 0.08 | ask .66 |
+| 111+ | 0.05 – 0.17 | **bid .21** / ask .66 |
+
+Market mids sum to **1.895** — the book is unformed and the mids are meaningless. Every ask is
+unbuyable. The two real plays: a **maker bid on 91-95 at ≤.50** (fair ~0.62), and **buying NO on
+111+ at ~.79** (fair NO 0.83–0.95). Both are maker-side in a thin book, which is exactly the
+edge profile this project has repeatedly concluded is the durable one.
+
+---
+
+## 5. Scorecard — including the call I got wrong
+
+**Radiant/Dire: my Aug-14 call was wrong.** I wrote that Dire at 30.5¢ looked cheap on a central
+estimate of ~0.50, flagging that the two research passes conflicted on TI14's radiant rate and
+that the position should be small pending resolution. The group stage resolved it against me:
+TI15 came in at **54% Radiant**, giving Radiant a 59–50 lead with only ~37 games left. Radiant
+now trades .9475 and my model agrees (0.88–0.96). Anyone who took the Dire side is down ~2/3.
+The guardrail worked — "size small, resolve the conflict first" — but the directional call was
+a miss, and the lesson is that the pub-vs-pro reference-class argument I leaned on was weaker
+than the tournament's own sample.
+
+**Most-banned Treant: right, and the market has caught up.** I priced it ~0.95 when it traded
+.63 bid. Treant finished the group stage **101 bans + 8 picks = 100% contested across all 109
+games**. It now trades .90 bid / .99 ask — fairly priced, no edge left. The edge existed for
+about five days.
+
+**TEAM VISION at 12¢ (July): +242%** at the current 41¢. The Aurora rung of that same ladder
+went to zero. Both are in the ledger.
+
+---
+
+## 6. Honest limits
+
+Every tournament fact here is **search-snippet-derived** — Liquipedia, OpenDota, Stratz, Dotabuff
+and most esports press are egress-blocked from this environment. Cross-checks that survived:
+Day-1 series reconstruct to exactly 29 games; Treant's 28+1 also sums to 29; the Swiss format
+arithmetic closes exactly (1×4-0, 2×4-1, 5×3-2, 5×2-3, 2×1-4, 1×0-4). Not verified: game records
+for 11 of 16 teams, the exact lower-bracket cross-seeding rule (TI convention assumed), and
+whether the grand final carries any upper-bracket advantage (no source states it either way; TI
+never has). The ratings driving the model are my judgment calls on public evidence, which is why
+§2 gives three scenarios instead of one number.
