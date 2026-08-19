@@ -266,3 +266,52 @@ for 11 of 16 teams, the exact lower-bracket cross-seeding rule (TI convention as
 whether the grand final carries any upper-bracket advantage (no source states it either way; TI
 never has). The ratings driving the model are my judgment calls on public evidence, which is why
 §2 gives three scenarios instead of one number.
+
+---
+
+## 7. $100 allocation — worked calculation (2026-08-19, pre-QF)
+
+**Critical precondition: at the ASK nothing is +EV** (VISION −0.5%, Yandex −2.0% per dollar).
+Both legs are only positive as **maker orders resting at the current bid**. Fair values below are
+the equal-weight blend of the three rating scenarios (VISION 41.5%, Yandex 8.6%).
+
+**Sleeve 1 — $50 on VISION + Yandex, split proportional to EV/dollar**
+
+| Leg | EV/$ @ bid | Stake | Order | Shares | Pays if it wins |
+|---|---|---|---|---|---|
+| VISION | +3.8% | **$23.08** | maker buy @ **0.400** | 57.7 | $57.70 |
+| Yandex | +4.5% | **$26.92** | maker buy @ **0.082** | 328.3 | $328.30 |
+
+Staked $50 · **EV +$2.10 (+4.2%)** · P(one of them wins) 50.1%
+
+**Sleeve 2 — $50 into a genuinely independent +EV outcome**
+Longest-game market: buy **NO on "111+" at 0.86** (the 111+ YES bid is .14 against a model fair
+of ~.10). 58.1 shares. Fair NO ≈ 0.90 → **EV +$2.12 net of the taker fee (+4.2%), win prob ~90%.**
+This is the only takeable (non-maker) edge left on the board and it is near-independent of who
+lifts the Aegis.
+
+**Combined $100 distribution**
+
+| Scenario | Prob | Net P&L |
+|---|---|---|
+| another team wins + no 111+ game | 44.9% | −$41.86 |
+| VISION + no 111+ game | 37.4% | +$15.84 |
+| Yandex + no 111+ game | 7.7% | +$286.43 |
+| another team + 111+ game | 5.0% | −$100.00 |
+| VISION + 111+ game | 4.2% | −$42.30 |
+| Yandex + 111+ game | 0.9% | +$228.29 |
+
+**Total EV +$4.42 (+4.4%) · P(finish ahead) 45.9%**
+
+### Two honest warnings
+
+1. **This is ~4.5x Kelly.** Log-optimal sizing on these edges is ~$22 total across five legs
+   (EV +$1.77, P(profit) 81.8%), not $100. You are deliberately overbetting for a bigger swing.
+2. **"Proportional to EV" is a longshot trap in a mutually-exclusive book.** Spreading the second
+   $50 across Falcons/BoomBoys/Liquid raises EV to +$13.38 but drops P(profit) to 40.2% — because
+   EV/dollar peaks on longshots, it under-funds VISION, so the *most likely* winner (42%) leaves
+   you down $80. Higher EV, worse odds of finishing ahead. Choose consciously.
+
+**Fill risk:** QFs start Aug 20 02:00 UTC. Both maker bids sit at the current best bid and may
+not fill. Crossing to the ask instead costs ~0.5% (VISION) / ~2.0% (Yandex) — cheap certainty if
+you want the position on before the games.
