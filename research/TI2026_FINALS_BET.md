@@ -315,3 +315,61 @@ lifts the Aegis.
 **Fill risk:** QFs start Aug 20 02:00 UTC. Both maker bids sit at the current best bid and may
 not fill. Crossing to the ask instead costs ~0.5% (VISION) / ~2.0% (Yandex) — cheap certainty if
 you want the position on before the games.
+
+---
+
+## 8. Quarterfinal-day allocation (2026-08-19 16:03 UTC, QFs start Aug 20 02:00 UTC)
+
+**Per-match markets exist and are far better priced than the winner book:** ~1% vig and 1¢
+spreads, versus 13% at the outright. They are also internally coherent — game-winner, match-winner,
+BO3 handicap and O/U-2.5-games all reconcile to within 1–2pp of each other.
+
+| Match | Market (match winner) | Model (balanced) | Verdict |
+|---|---|---|---|
+| Iron Wing vs **Team Spirit** | .535 / .465 | .425 / **.575** | model likes Spirit +10.5pp |
+| **TEAM VISION** vs BoomBoys | .735 / .265 | .723 / .277 | agree — no bet |
+| **Team Liquid** vs Team Yandex | .545 / .455 | .554 / .446 | agree — no bet |
+| **Nigma Galaxy** vs Falcons | .335 / .665 | **.385** / .615 | model likes Nigma +4.5pp |
+
+**$50 across today's games — only two sides clear a 2% hurdle:**
+
+| Bet | Order | Stake | Shares | Raw EV/$ | Confidence |
+|---|---|---|---|---|---|
+| **Team Spirit** to beat Iron Wing | buy @ .47 | **$25.65** | 54.6 | +20.8% | **low (0.40)** |
+| **Nigma Galaxy** to beat Falcons | buy @ .34 | **$24.35** | 71.6 | +11.3% | medium (0.70) |
+
+Split is proportional to *confidence-adjusted* EV (+8.3% vs +7.9%), which lands near 50/50.
+**Do not bet VISION/BoomBoys or Liquid/Yandex** — model and market agree within 1–2pp, so those
+stakes are pure vig.
+
+**The Spirit caveat, stated plainly.** Spirit's and Iron Wing's Swiss *game* records were never
+published, so I assumed a 0.52 game win rate for both and the model's Spirit edge comes almost
+entirely from the pre-TI prior (EWC-2025 pedigree). Against that: Spirit's two Swiss losses were
+both **0–2 sweeps** (to VISION and Nigma) while Iron Wing's were competitive 1–2s, and Iron Wing
+beat both Nigma and the defending champions. The market siding with Iron Wing is defensible; hence
+the 0.40 haircut. If you want only one bet today, take **Nigma**.
+
+**Note this resolves an apparent contradiction with §4.** Spirit is simultaneously *overpriced in
+the winner market* (.145 vs fair .090) and *underpriced in the match market* (.47 vs fair .575).
+The market implies Spirit's title chance **conditional on beating Iron Wing** is .136/.465 = 29.2%,
+second only to VISION; my model says 16.2%. Buying Spirit for the match while not owning Spirit
+for the title is the coherent pair, not a contradiction.
+
+**$50 on the best stats bet across all TI markets — only one is takeable:**
+
+| Market | Price | Model fair | EV/$ | Status |
+|---|---|---|---|---|
+| **Longest game: NO on "111+"** | **.86** | **0.90** | **+4.2%** | **takeable, ~90% win** |
+| Radiant/Dire: Radiant | .96 | 0.92–0.955 | −2.2% | converged since Aug 14 |
+| Most banned: Treant | .989 | ~0.99 | +0.1% | converged (was .63 five days ago) |
+| Longest game: 91-95 | ask .68 | 0.52–0.67 | −9.8% | ask sits above fair |
+| Shallowest pool: HULIGANI | ask .995 | 0.93–0.97 | −4.5% | ask above fair |
+
+$50 → 58.1 shares, **EV +$2.12**. The two new hero-pool markets are unformed (widest-pool mids sum
+to 1.40, bids to 0.17) and I lack the per-team unique-hero counts to price them — flagged, not
+guessed. Structural note for later: "widest pool" mechanically favours whoever plays the most
+games, which is a deep **lower-bracket** run (6 series) rather than the upper-bracket champion (4);
+and **LGD at .0545 is already eliminated** and cannot add heroes, so it should be near zero.
+
+**Combined $100: EV ≈ +$11 on the model's raw numbers, ≈ +$6 after the confidence haircuts.**
+Still ~4x Kelly on these edges — same overbetting caveat as §7.
