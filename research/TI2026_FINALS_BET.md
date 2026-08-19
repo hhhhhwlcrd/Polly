@@ -167,6 +167,74 @@ edge profile this project has repeatedly concluded is the durable one.
 
 ---
 
+## 4b. PER-TEAM BREAKDOWN (prices refreshed 2026-08-19 15:46 UTC, pre-QF)
+
+Book state: **bid-sum 1.019 · mid-sum 1.068 · ask-sum 1.117**. Spreads tightened through the day
+(VISION 2¢→1¢). Nigma drifted down (.0645→.052), Spirit up (.135→.145).
+
+| Team | Bid | Ask | Spread | as % of price | Shin fair | QF win% | Top-4% | Model prior / bal / form | Edge @ ask |
+|---|---|---|---|---|---|---|---|---|---|
+| **TEAM VISION** | .400 | .410 | .010 | 2% | 38.9 | **72.3** | **78.4** | 30.4 / **40.8** / 53.4 | −1.0 |
+| **Team Spirit** | .140 | .150 | .010 | 7% | 13.6 | 57.5 | 49.0 | 11.2 / 9.3 / 6.5 | **−6.1** |
+| **Team Liquid** | .120 | .140 | .020 | 15% | 12.2 | 55.4 | 56.7 | 11.0 / 13.0 / 14.7 | −1.4 |
+| **Team Falcons** | .100 | .120 | .020 | 18% | 10.2 | 61.5 | 55.6 | 14.7 / 12.5 / 8.6 | **+0.2** |
+| **Team Yandex** | .082 | .085 | .003 | 4% | 7.6 | 44.6 | 46.8 | 14.0 / 8.4 / 3.3 | −0.3 |
+| **1w Team** | .067 | .088 | .021 | 27% | 7.1 | 42.5 | 36.7 | 5.8 / 4.8 / 3.1 | **−4.3** |
+| **BoomBoys** | .060 | .070 | .010 | 15% | 5.8 | 27.7 | 40.4 | 10.0 / 6.9 / 3.6 | −0.3 |
+| **Nigma Galaxy** | .050 | .054 | .004 | 8% | 4.6 | 38.5 | 36.4 | 2.8 / 4.4 / 6.9 | −1.2 |
+
+### Team profiles
+
+**TEAM VISION (PARIVISION) — .400/.410 · fair ~40.8%**
+Swiss **4–0, 8–2 games (80%)** — the only undefeated team. Head-to-head vs survivors: **3–0**
+(Falcons 2–1 incl. the 94-min game, Spirit 2–0, BoomBoys). Credentials: EWC 2026 champion,
+DreamLeague S29 champion, #1 pre-TI Elo, coached by Puppey. Used the #1 seed to pick **BoomBoys**
+— the weakest survivor — giving a 72.3% QF and a 78.4% top-4. *The correct favourite; priced
+right, not cheap.*
+
+**Team Spirit — .140/.150 · fair ~9.3% → the clearest overpricing**
+Swiss **3–2**. Opened 3–0, then **0–2 to VISION and 0–2 to Nigma back-to-back**, then needed
+three games to beat Resilience (2–3 team) in the elimination round. H2H vs survivors **1–2**.
+Pedigree is real (EWC 2025 champion, Yatoro/Collapse) and that is what the market is paying for —
+the crowd-favourite premium this project has documented before. Negative in **all three**
+scenarios (−3.1 to −8.0). Also drew the toughest QF of the top seeds (1w, 57.5%).
+
+**Team Liquid — .120/.140 · fair ~13.0%**
+Swiss **4–1, 9–5 games (64%)**. Grindy: three of four wins went the distance. H2H **2–1** (beat
+Yandex, beat 1w; lost to Spirit 1–2). BLAST Slam VI champion. The one team that looks mildly
+*better* the more weight you give recent form (11.0 → 13.0 → 14.7 across scenarios). Note the
+2¢ spread is 15% of the price — maker-only.
+
+**Team Falcons — .100/.120 · fair ~12.5% → the only non-negative edge at the ask**
+Swiss **3–2, 8–7 games (53%)** — the worst game rate among survivors; every series went three.
+H2H **0–2** (lost to VISION and 1w). But: **defending TI champions**, longest-tenured roster in
+the field, and they did *exactly this* last year — scraped the TI14 group stage and won the
+title. Prior-heavy 14.7% vs form-heavy 8.6% is the widest philosophical split in the field.
+
+**Team Yandex — .082/.085 · fair ~8.4%**
+Swiss **2–3**; wins only over HULIGANI (0–4) and Resilience, plus a 2–1 elimination-round win
+over LGD. Blew a lead in a reverse sweep to Aurora. Yet **#2 pre-TI Elo with three season titles**
+(DreamLeague S27, Wallachia S7, BLAST Slam VII). The biggest prior-vs-form gap on the board:
+14.0% if you trust the season, 3.3% if you trust the Swiss.
+
+**1w Team (ex-Tundra/1win) — .067/.088 · fair ~4.8% → second-clearest overpricing**
+Swiss **3–2**, top elimination-round seed. H2H **2–2** (beat Nigma 2–0 and Falcons 2–1; lost to
+BoomBoys and Liquid). Four titles pre-patch-7.41, then a slump plus an org sale. Negative in all
+three scenarios (−2.5 to −5.2). The **27% spread** (.067/.088) is the widest in the book — a
+taker here pays enormously.
+
+**BoomBoys (BetBoom) — .060/.070 · fair ~6.9%**
+Swiss **2–3**, the worst record of any survivor, and drew the worst possible QF (VISION, 27.7%).
+Offsetting: EWC 2026 runner-up and Wallachia S8 champion, and they reversed a 0–2 Swiss loss to
+Aurora into a 2–0 elimination-round win 24h later. Prior-heavy 10.0% vs form-heavy 3.6%.
+
+**Nigma Galaxy — .050/.054 · fair ~4.4% → the hot-qualifier trap**
+Swiss **4–1, 8–2 games (80%)** — tied with VISION for the best game rate, four straight 2–0s.
+But the schedule was weak: OG (1–4), LGD, Vici (2–3), with **one real scalp (Spirit 2–0)**. They
+also opened 0–2 to 1w. Pre-tournament they were the weakest team in the field at 1.7¢. Negative
+in all three scenarios; the market has already re-rated them from 1.7¢ to 5.2¢ and the drift is
+now *down* (.0645 → .052 today).
+
 ## 5. Scorecard — including the call I got wrong
 
 **Radiant/Dire: my Aug-14 call was wrong.** I wrote that Dire at 30.5¢ looked cheap on a central
