@@ -427,3 +427,42 @@ lot, EV −$6.40.
 **If you want more upside instead:** swap $10 of the handicap into the outright at .085 (11.8x
 payoff). That raises the ceiling a lot and the variance with it — it is the opposite of this
 structure's intent.
+
+---
+
+## 10. POSITION LOG — filled 2026-08-19 (QF day)
+
+| Filled | Bet | Price | Shares | Pays if it hits |
+|---|---|---|---|---|
+| **$40** | Yandex **+1.5 games** | .72 | 55.56 | $55.56 |
+| **$20** | Yandex **match winner** | .46 | 43.48 | $43.48 |
+| **$5** | **NO on "111+"** | .86 | 5.81 | $5.81 |
+| $35 | cash, unstaked | | | |
+
+Deployed $65 of $100 (the NO-111+ leg came in at $5 rather than the recommended $25).
+
+| Scenario | Prob | Net P&L |
+|---|---|---|
+| Yandex 2–0 or 2–1, no 111+ game | 39.4% | **+$39.85** |
+| Yandex loses 1–2, no 111+ game | 23.9% | −$3.63 |
+| Yandex swept 0–2, no 111+ game | 26.7% | −$59.19 |
+| Yandex wins, 111+ happens | 4.4% | +$34.03 |
+| Yandex loses 1–2, 111+ happens | 2.7% | −$9.44 |
+| Yandex swept 0–2, 111+ happens | 3.0% | −$65.00 |
+
+**EV −$1.65 · P(ahead) 43.8% · worst case −$65** (vs −$85 on the full-size version — the smaller
+NO leg and larger cash pile cut the tail).
+By worldview: **prior-heavy +$6.03 · balanced −$0.78 · form-heavy −$10.20.**
+
+**Effect of under-sizing the NO-111+ leg.** It was the only +EV component, so trimming it $25→$5
+moved portfolio EV from −$0.72 to −$1.65 and, more importantly, weakened the cushion: the
+"Yandex loses 1–2" outcome went from −$0.37 (a scratch) to −$3.63. The structure still works —
+a competitive 1–2 defeat costs under $4 — but the break-even property is thinner.
+
+**Optional top-up:** adding $20 to NO-111+ at .86 (23.3 shares) is +$0.85 EV on its own and
+restores the cushion, since it pays in ~90% of states. Purely optional; the $35 cash is also a
+perfectly good place to leave it.
+
+**Live prices at fill time** (Liquid–Yandex, unchanged from the analysis): Match Winner
+Liquid .545 / Yandex .455 · Game 1 .535/.465 · Handicap Liquid −1.5 .285 / Yandex +1.5 .715 ·
+O/U 2.5 games .495/.505. Quarterfinals begin Aug 20 02:00 UTC.
