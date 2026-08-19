@@ -155,26 +155,27 @@ def simulate_ti(
 def shin_devig(decimal_odds: dict[str, float]) -> pd.DataFrame:
     """Shin-method de-vig of bookmaker decimal odds -> fair probabilities.
     Solves for insider fraction z by bisection so probabilities sum to 1."""
+    # NOTE: Shin's formula takes the RAW inverse odds pi_i (which sum to B>1),
+    # not the normalised ones. Using normalised values here is a classic bug and
+    # silently returns near-basic de-vig.
     inv = {t: 1.0 / o for t, o in decimal_odds.items()}
     B = sum(inv.values())
-    beta = {t: v / B for t, v in inv.items()}
+
+    def _p(z, x):
+        return (np.sqrt(z**2 + 4 * (1 - z) * x**2 / B) - z) / (2 * (1 - z))
 
     def total(z):
-        return sum(
-            (np.sqrt(z**2 + 4 * (1 - z) * b**2 / B) - z) / (2 * (1 - z)) for b in beta.values()
-        )
+        return sum(_p(z, x) for x in inv.values())
 
     lo, hi = 0.0, 0.4
-    for _ in range(80):
+    for _ in range(100):
         mid = (lo + hi) / 2
         if total(mid) > 1:
             lo = mid
         else:
             hi = mid
     z = (lo + hi) / 2
-    shin = {
-        t: (np.sqrt(z**2 + 4 * (1 - z) * b**2 / B) - z) / (2 * (1 - z)) for t, b in beta.items()
-    }
+    shin = {t: _p(z, x) for t, x in inv.items()}
     basic = {t: v / B for t, v in inv.items()}
     return pd.DataFrame(
         {
