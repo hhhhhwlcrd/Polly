@@ -533,3 +533,57 @@ with 1¢ spreads** versus **~5.6% at the outright ask** — five times cheaper t
 view, and it will list before the semifinal. If you want exposure now, Yandex outright at **.135**
 is +15.9% EV/$ on the model; **$5–8 of the $32** is a defensible size, leaving the rest for the
 cheaper match market.
+
+---
+
+## 12. UB SEMIFINAL STATS REFRESH (2026-08-20 13:13 UTC)
+
+**Bracket state:** Spirit, VISION, Yandex through to the UB semis. **Nigma vs Falcons is still
+unplayed** (Falcons .645), so Yandex's semifinal opponent remains undetermined.
+
+### The new market: Team Spirit vs TEAM VISION (UB semi, Bo3, Aug 21)
+Freshly listed, only **$944 volume** — VISION **.65 bid / .68 ask**, Spirit .32/.35.
+
+| Scenario | Rating gap | VISION per game | VISION Bo3 | EV/$ @ .68 |
+|---|---|---|---|---|
+| prior-heavy | 74 | .605 | .655 | −4.6% |
+| balanced | 107 | .649 | .717 | **+4.5%** |
+| form-heavy | 151 | .705 | .790 | **+15.2%** |
+| **equal-weight** | | | **.721** | **+5.0%** |
+
+**VISION at .68 is a modest buy** — positive in two of three worldviews, +5.0% blended. **Spirit at
+.35 is a clear avoid at −22.1%.** Caveat: the book is one day old with $944 traded and a 3¢ spread,
+so treat the quote as soft.
+
+### Full remaining-tournament projection
+
+| Team | prior | balanced | form | **model** | market | edge |
+|---|---|---|---|---|---|---|
+| TEAM VISION | 41.4 | 52.5 | 65.3 | **53.1** | 41.0 | **+12.1** |
+| Team Yandex | 24.1 | 15.8 | 7.7 | **15.9** | 13.2 | **+2.7** |
+| Team Spirit | 14.9 | 12.6 | 8.9 | 12.1 | 15.5 | −3.4 |
+| Team Falcons | 11.8 | 10.8 | 8.7 | 10.5 | 11.5 | −1.0 |
+| Nigma Galaxy | 1.8 | 2.9 | 4.7 | 3.2 | 4.9 | −1.7 |
+| Team Liquid | 2.1 | 2.5 | 3.0 | 2.5 | 7.0 | **−4.5** |
+| BoomBoys | 2.5 | 1.8 | 0.9 | 1.7 | 4.2 | −2.4 |
+| 1w Team | 1.3 | 1.1 | 0.9 | 1.1 | 2.5 | −1.5 |
+
+**The VISION gap persists and is now the story of this book.** The outright has barely moved
+(.393 → .390 → .410) across two rounds in which VISION cleared a 73.5% quarterfinal, while the
+model — positive in *all three* scenarios now (41.4 / 52.5 / 65.3) — says 53.1%. Two readings:
+either the outright is genuinely slow to reprice survivors, or it is discounting a hard remaining
+path. Note the outright's **4¢ spread (.39/.43)** eats a third of the edge, whereas the match
+market prices the same view at ~3¢ on a 68¢ contract.
+
+**Yandex (+2.7pp) remains mildly cheap** and is the one holding that is *up* on both the model and
+the market since the QF (model 8.4% → 15.9%; market 8.2¢ → 13.2¢).
+
+**Liquid at 7.0¢ is the clearest sell** (model 2.5%): it lost its QF and now needs a five-series
+lower-bracket run, which the market appears not to have fully discounted.
+
+### Where the value sits now, ranked
+1. **VISION UB-semi @ .68** — +5.0% EV, cleanest execution (match books ≈1% vig vs 5.6% outright).
+2. **VISION outright @ .43** — bigger nominal edge (+12.1pp) but a 4¢ spread and the model's most
+   aggressive corner; size smaller than the headline suggests.
+3. **Yandex outright @ .144** — +2.7pp, consistent with the position already held.
+4. Avoid: Spirit .35 (semi), Liquid .09, BoomBoys .05, 1w .031 — all negative in every scenario.
