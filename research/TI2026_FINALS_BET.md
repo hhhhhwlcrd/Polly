@@ -613,3 +613,40 @@ semi result is **$12 of $34**.
 
 **Why row 1 is capped at .130:** at the .145 ask the model's edge is ~0.4pp — inside the noise.
 At .130 it is +15%; at the .113 bid it is +32%. The whole edge here is in *not crossing the spread*.
+
+---
+
+## 14. UPDATE 2026-08-20 16:27 UTC — Yandex becomes +EV at the ask
+
+**The Nigma–Falcons QF is live at 1–1 with game 3 deciding** ($6.8M traded; Falcons .605 / Nigma
+.395). Yandex's semifinal opponent is therefore still unresolved, and the outright has not priced
+that optionality:
+
+| Yandex's semi opponent | P | Yandex champion (model) |
+|---|---|---|
+| Falcons (live .605) | 60.5% | **15.1%** |
+| Nigma (live .395) | 39.5% | **17.3%** |
+| **Blended fair** | | **.160** |
+
+Market: **.112 bid / .144 ask.**
+
+| Entry | EV/$ |
+|---|---|
+| at the .144 **ask** | **+8.5%** |
+| at a .130 maker bid | +23.0% |
+| at the .112 bid | +42.8% |
+
+**The key property: .144 sits below the fair value of *both* branches** (.151 if Falcons advances,
+.173 if Nigma does). So buying now is +EV regardless of how game 3 ends — a rare robust entry, and
+the reason to act before the QF resolves rather than after. Once Falcons advances (the likelier
+branch) the edge compresses from +8.5% to about +5%.
+
+**Revised row 1:** buy Yandex at **≤ .148** (was ≤ .130). Crossing the .144 ask is now justified;
+a resting bid at .130 is still better if it fills. Rows 2–6 of the table in §13 are unchanged.
+
+**Rest of the board at the ask** (blended model): VISION 52.9% vs .430 = **+21.4%** (still the
+model's most aggressive corner — treat with the caution noted in §12); everything else is deeply
+negative: Spirit −28.8%, Falcons −24.7%, Nigma −49.2%, Liquid −68.4%, BoomBoys −68.1%, 1w −72.9%.
+
+*Sizing reminder: Kelly on this edge is ~$0.64 of a $34 bank. The $12 in row 1 is a deliberate
+overbet, as every stake in this log has been.*
