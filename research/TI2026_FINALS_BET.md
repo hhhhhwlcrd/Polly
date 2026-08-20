@@ -466,3 +466,70 @@ perfectly good place to leave it.
 **Live prices at fill time** (Liquid–Yandex, unchanged from the analysis): Match Winner
 Liquid .545 / Yandex .455 · Game 1 .535/.465 · Handicap Liquid −1.5 .285 / Yandex +1.5 .715 ·
 O/U 2.5 games .495/.505. Quarterfinals begin Aug 20 02:00 UTC.
+
+---
+
+## 11. RESULT + EVALUATION (2026-08-20 13:06 UTC)
+
+### The bet won — Yandex beat Liquid 2–0
+
+| Leg | Stake | Price | Shares | Result | Return |
+|---|---|---|---|---|---|
+| Yandex +1.5 games | $40 | .72 | 55.56 | ✅ won | **$55.56** |
+| Yandex match winner | $20 | .46 | 43.48 | ✅ won | **$43.48** |
+| NO on "111+" | $5 | .86 | 5.81 | pending | — |
+
+**$60 staked → $99.04 returned = +$39.04 (+65%).** The 2–0 sweep was the best branch: it hit the
+39.4% cell of the outcome table (+$39.85 projected vs +$39.04 actual, the difference being the
+unresolved NO-111+ leg).
+
+**Process note, not a victory lap:** the model rated this bet at **−1.65 EV** on the equal-weight
+view and only +$6.03 under prior-heavy. It won because the prior-heavy thesis — Yandex's season
+pedigree over a weak Swiss — was the correct read, which is exactly what a 2–0 over a 4–1 Swiss
+team demonstrates. One result does not validate a −EV entry; it validates *the worldview*, and the
+model has now been updated for it (Yandex 1514 → 1535).
+
+### Quarterfinal scoreboard vs the model
+
+| Match | Model favourite | Result | Model call |
+|---|---|---|---|
+| Iron Wing vs Spirit | **Spirit .575** (market had IW) | **Spirit won** | ✅ the flagged low-confidence edge landed |
+| VISION vs BoomBoys | VISION .723 | VISION won 2–0 | ✅ |
+| Liquid vs Yandex | Liquid .554 | **Yandex won 2–0** | ❌ model favoured Liquid |
+| Nigma vs Falcons | Falcons .615 | **still pending** | — |
+
+### Yandex's next step: UB semifinal vs the Nigma/Falcons winner
+
+That QF has not been played yet, so the opponent is undetermined (market: Falcons 63.5%).
+
+| Opponent | Yandex wins UB semi | Yandex champion | Yandex reaches GF |
+|---|---|---|---|
+| Falcons (63.5% likely) | **50.3%** | 15.3% | 40.5% |
+| Nigma (36.5%) | **61.8%** | 17.3% | 47.0% |
+| **Blended** | **~54%** | **16.0%** | **42.9%** |
+
+### Post-QF board (updated ratings: VISION 1634, Yandex 1535, Falcons 1534, Spirit 1527)
+
+| Team | Model champ% | Reach GF% | Market% | Edge |
+|---|---|---|---|---|
+| TEAM VISION | 53.0 | 73.6 | 39.0 | **+14.0** |
+| **Team Yandex** | **16.0** | **42.9** | **12.8** | **+3.3** |
+| Team Spirit | 12.3 | 29.6 | 15.5 | −3.2 |
+| Team Falcons | 10.4 | 28.2 | 11.5 | −1.1 |
+| Nigma / Liquid / BoomBoys / 1w | 3.0 / 2.4 / 1.7 / 1.1 | | 4.9 / 4.5 / 4.0 / 2.5 | all negative |
+
+**On the VISION +14pp:** the market barely moved VISION (.393 → .390) despite it clearing a 73.5%
+quarterfinal. Conditional on advancing it "should" be near .535. Either the book is slow or it is
+pricing a hard remaining path (Spirit in the UB semi). Treat with caution — this is where my model
+is most aggressive — and note the **8¢ spread (.35/.43)** eats a third of the edge at the ask.
+
+### Sizing on a $32 bank
+
+Kelly on the Yandex outright (model 16.0% vs .135 ask) is ~2.9% of bank = **$0.92**; quarter-Kelly
+is $0.23. Any stake you actually feel is already a multiple of that.
+
+**Best execution advice: wait for the UB-semifinal match market.** Per-match books ran **~1% vig
+with 1¢ spreads** versus **~5.6% at the outright ask** — five times cheaper to express the same
+view, and it will list before the semifinal. If you want exposure now, Yandex outright at **.135**
+is +15.9% EV/$ on the model; **$5–8 of the $32** is a defensible size, leaving the rest for the
+cheaper match market.
