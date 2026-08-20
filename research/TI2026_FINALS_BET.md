@@ -587,3 +587,29 @@ lower-bracket run, which the market appears not to have fully discounted.
    aggressive corner; size smaller than the headline suggests.
 3. **Yandex outright @ .144** — +2.7pp, consistent with the position already held.
 4. Avoid: Spirit .35 (semi), Liquid .09, BoomBoys .05, 1w .031 — all negative in every scenario.
+
+---
+
+## 13. EXECUTION TABLE — $34 Yandex plan (built 2026-08-20 15:33 UTC)
+
+Live at build time: **Yandex .113 bid / .145 ask** (mid .129) · Falcons .12/.14 · Nigma .03/.042
+(their QF is still swinging — Nigma bounced .017 → .036) · VISION .40/.43.
+
+Model fair values: **Yandex unconditional .149** · **if it wins the semi .252** · **if it loses .046**.
+The semi vs Falcons is a coin flip (1535 vs 1534, P(win) 50.2%).
+
+| # | Date / trigger | Link | Bet & direction | Acceptable price | Size |
+|---|---|---|---|---|---|
+| **1** | **NOW** (before the semi) | [TI 2026 Winner](https://polymarket.com/event/the-international-2026-winner-20260629212545745) | **BUY Team Yandex** — resting **maker bid**, do not cross | **≤ .130** (fair .149). Never pay the .145 ask | **$12** (~92 sh @ .13) |
+| **2** | When the **Yandex vs Falcons semi market lists** (after their QF resolves; slug will look like `dota2-ty-flc-2026-08-2x`) | search "dota2" on Polymarket, or [event list](https://polymarket.com/markets/esports) | **BUY Yandex — Match Winner**. Better execution than the outright: match books run ~1% vig vs the outright's 3¢ spread | **≤ .52** (coin-flip fair .50; anything ≤ .52 is fine) | Use this **instead of** row 1 if it lists before you fill — same $12, not additional |
+| **3** | **Yandex LOSES the semi** → drops to lower bracket | [TI 2026 Winner](https://polymarket.com/event/the-international-2026-winner-20260629212545745) | **BUY Team Yandex** (the dip) | **≤ .040 only** (fair .046). **If it holds ≥ .050, do not buy** | **$22** (550 sh @ .04) |
+| **4** | **Yandex WINS the semi** → into the UB final | [TI 2026 Winner](https://polymarket.com/event/the-international-2026-winner-20260629212545745) | **BUY Team Yandex** — only on a *non*-overshoot | **≤ .235** (fair .252). If it gaps to **.28+, sit out** and consider trimming row 1 into the spike | **$10** max, keep $12 dry |
+| **5** | **Any time** | [TI 2026 Winner](https://polymarket.com/event/the-international-2026-winner-20260629212545745) | **DO NOT BUY** Spirit, Liquid, BoomBoys, 1w | — | $0 — negative in every scenario |
+| **6** | **Hold** — no action | [Longest Single Game](https://polymarket.com/event/the-international-2026-longest-single-game-duration-20260617185055630) | Existing **NO on "111+"** (5.81 sh @ .86) — let it settle | Book is unformed (bid .01 / ask .69); marks are meaningless. **Do not trade it** | hold |
+
+**Rules that bind all rows:** maker orders only where possible; never place an order while a series
+is live; and rows 3 and 4 are **mutually exclusive** — exactly one fires. Total at risk before the
+semi result is **$12 of $34**.
+
+**Why row 1 is capped at .130:** at the .145 ask the model's edge is ~0.4pp — inside the noise.
+At .130 it is +15%; at the .113 bid it is +32%. The whole edge here is in *not crossing the spread*.
